@@ -2,6 +2,7 @@
 #include <cstdlib>
 
 
+#include "blocked_gemm.c"
 #include "include/utils.h"
 #include "include/naive.h"
 #include "include/constants.h"
@@ -15,6 +16,10 @@ int main(int argc, char *argv[]){
     int *A = (int *)(malloc(N*N*sizeof(int)));
     int *B = (int *)(malloc(N*N*sizeof(int)));
     int *C = (int *)(malloc(N*N*sizeof(int)));
+    
+    
+    int *ref = (int *)(malloc(N*N*sizeof(int)));
+    
     // int A[N*N] = {0};
     // int B[N*N] = {0};
     // int C[N*N] = {0};
@@ -26,11 +31,12 @@ int main(int argc, char *argv[]){
     }
 
     clock_t start, end;
+    // naive_matrix_multiply(A, B, ref);
+
 
     start = clock();
 
-    naive_matrix_multiply(A, B, C);
-
+    blocked_matrix_multiply(A, B, C);
     end = clock();
 
     double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
