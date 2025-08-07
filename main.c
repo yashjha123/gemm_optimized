@@ -2,6 +2,7 @@
 #include <cstdlib>
 
 
+#include "include/loop_reorder_gemm.h"
 #include "blocked_gemm.c"
 #include "include/utils.h"
 #include "include/naive.h"
@@ -35,8 +36,15 @@ int main(int argc, char *argv[]){
 
 
     start = clock();
+    // matrix_multiply_i_j_k(A, B, ref);
+    // matrix_multiply_k_i_j(A, B, ref);
 
-    blocked_matrix_multiply(A, B, C);
+
+    // matrix_multiply_j_k_i(A,B,C);
+    // matrix_multiply_i_k_j(A,B,C);
+    // matrix_multiply_k_j_i(A,B,C);
+    matrix_multiply_j_i_k(A,B,C);
+    // blocked_matrix_multiply(A, B, C);
     end = clock();
 
     double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
