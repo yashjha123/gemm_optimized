@@ -56,48 +56,79 @@ static inline void micro_pack_A(const int *A, const int i_offset, const int k_of
     }
 }
 
-static inline void micro_pack_B(const int *A, const int k_offset, const int j_offset, int*  packB){
+static inline void micro_pack_B(const int *B, const int k_offset, const int j_offset, int*  packB){
     for(int k = 0; k < KC; k++){
         const int kk = k_offset + k;
         const int base = k * NR;
         for(int j = 0; j < NR; j++){
             const int jj = j_offset + j;
-            packB[base + j]  = A[index(kk, jj)];
+            packB[base + j]  = B[index(kk, jj)];
         }
     }
 }
 
 
+static inline void macro_pack_A(const int *A, const int i_offset, const int k_offset, int*  packA){
+   for (int ib = 0; ib < block_size/MR; ib++) {
+        int i0 = i_offset + ib * MR;
+        int* restrict destA = packA + ib * KC * MR;
+        micro_pack_A(A, i0, KC, destA);
+    }
+}
 
+static inline void macro_pack_B(const int *B, const int k_offset, const int j_offset, int*  packB){
+    for(int jb = 0; jb < block_size/NR; jb++){
+        int j0 = j_offset + jb * NR;
+        int* restrict destB = packB + jb * KC * NR;
+        micro_pack_B(B, k_offset, j0, destB);
+    }
+}
 
 
 void micro_level_matrix_multiply(int *A, int *B, int *C){
     
     int n = N / block_size; // small n (i.e. number of blocks)
     
-    // now we iterate the blocks of these matrices
-    for(int kk = 1; kk <= n; kk++){
-    for(int ii = 1; ii <= n; ii++ ){
-        for(int jj = 1; jj <= n; jj++){
-            for(int k = (kk-1)*block_size; k < (kk*block_size); k+=KC){
-                for(int i = (ii-1)*block_size; i < (ii*block_size); i+=MR){
-                    micro_pack_A(A, i, k, packA);
-                    for(int j = (jj-1)*block_size; j < (jj*block_size); j+=NR){
-                            // C[index(i,j)] += A[index(i, k)] * B[index(k,j)];
-                            // should be hoisted
-                            int packA[MR*KC];
-                            int packB[KC*NR];
 
+    int packA[MR*KC*block_size];
+    int packB[KC*NR*block_size];
 
-                            
-                            micro_pack_B(B, k, j, packB);
+    for (int j = 0; j < N; j += NR) {
+        for (int k = 0; k < N; k += KC) {
+            micro_pack_B(B, k, j, packB);
+            for (int i = 0; i < N; i += MR) {
+                micro_pack_A(A, i, k, packA);
 
-                            int *micro_c = &C[index(i,j)];
-                            microkernel_4x4(packA, packB, micro_c);
-                        }
-                    }
-                }
+                int *micro_c = &C[index(i, j)];
+                microkernel_4x4(packA, packB, micro_c);
             }
         }
     }
+    // for(int jj = 0; jj <= n; jj+=block_size){
+    //     for(int kk = 0; kk <= n; kk+=block_size){
+    //         macro_pack_B(B, (jj-1)*block_size, (kk-1)*block_size, packB);
+    //         for(int ii = 0; ii <= n; ii+=block_size){
+    //             for(int j = 0; j < (jj*block_size); j+=NR){
+    //                 for(int k = (kk-1)*block_size; k < (kk*block_size); k+=KC){
+    //                     micro_pack_B(B, k, j, packB);
+    //                     for(int i = (ii-1)*block_size; i < (ii*block_size); i+=MR){
+    //                         micro_pack_A(A, i, k, packA);
+        
+        
+    //     // now we iterate the blocks of these matrices
+
+    //                         // C[index(i,j)] += A[index(i, k)] * B[index(k,j)];
+    //                         // should be hoisted
+
+
+                            
+
+    //                         int *micro_c = &C[index(i,j)];
+    //                         microkernel_4x4(packA, packB, micro_c);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
