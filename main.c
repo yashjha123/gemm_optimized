@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <cstdlib>
+#include <stdlib.h>
 
 
 #include "include/loop_reorder_gemm.h"
-#include "blocked_gemm.c"
+// #include "blocked_gemm.c"
+#include "include/optimized_gemm.h"
 #include "include/utils.h"
 #include "include/naive.h"
 #include "include/constants.h"
@@ -14,10 +15,15 @@
 int main(int argc, char *argv[]){
 
     
-    int *A = (int *)(malloc(N*N*sizeof(int)));
-    int *B = (int *)(malloc(N*N*sizeof(int)));
-    int *C = (int *)(malloc(N*N*sizeof(int)));
+    // int *A = (int *)(malloc(N*N*sizeof(int)));
+    // int *B = (int *)(malloc(N*N*sizeof(int)));
+    // int *C = (int *)(malloc(N*N*sizeof(int)));
     
+    int *A, *B, *C;
+    size_t align = 64;                 // 64-byte for AVX-512 safety
+    posix_memalign((void**)&A, align, N * N * sizeof(int));
+    posix_memalign((void**)&B, align, N * N * sizeof(int));
+    posix_memalign((void**)&C, align, N * N * sizeof(int));
     
     int *ref = (int *)(malloc(N*N*sizeof(int)));
     
@@ -26,8 +32,8 @@ int main(int argc, char *argv[]){
     // int C[N*N] = {0};
 
     for(int i = 0; i < N*N; i++){
-        A[i] = 1;
-        B[i] = 1;
+        A[i] = i;
+        B[i] = i;
         C[i] = 0;
     }
 
@@ -44,7 +50,8 @@ int main(int argc, char *argv[]){
     // matrix_multiply_i_k_j(A,B,C);
     // matrix_multiply_k_j_i(A,B,C);
     // matrix_multiply_j_i_k(A,B,C);
-    blocked_matrix_multiply(A, B, C);
+    // blocked_matrix_multiply(A, B, C);
+    micro_level_matrix_multiply(A, B, C);
     end = clock();
 
     double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -52,9 +59,9 @@ int main(int argc, char *argv[]){
 
     
 
-    // print_2x2matrix(A, N);
-    // print_2x2matrix(B, N);
-    // print_2x2matrix(C, N);
+    // print_2x2matrix(A);
+    // print_2x2matrix(B);
+    print_2x2matrix(C);
 
     printf("Multiplication done...\n");
     printf("Computation took %.2f seconds...\n", cpu_time_used);
