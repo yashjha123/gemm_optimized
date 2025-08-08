@@ -6,9 +6,9 @@
 #include "include/optimized_gemm.h"
 
 // we divide the matrix multiplication operation into blocks
-#define block_size 512 // also refered to as b in README.m
-#define MC 512 // number of rows in the micro-kernel
-#define NC 512 // number of rows in the micro-kernel
+// #define block_size 512 // also refered to as b in README.m
+// #define MC 512 // number of rows in the micro-kernel
+// #define NC 512 // number of rows in the micro-kernel
 
 
 // we want the tiles to fit in shape for registers for the micro-kernel
@@ -19,6 +19,14 @@
 #define MR 4
 #define NR 4
 #define KC 256
+
+#if defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L
+  #define ALLOC_ALIGNED(ptr, bytes) posix_memalign((void**)&(ptr), 64, (bytes))
+#else
+  #define ALLOC_ALIGNED(ptr, bytes) ((ptr) = aligned_alloc(64, (bytes)), ((ptr)!=NULL?0:1))
+#endif
+
+
 
 static inline void microkernel_4x4(const int* micro_A, const int* micro_B, int* C){
     int acc[MR][NR] = {};
@@ -75,15 +83,15 @@ static inline void micro_pack_B(const int *B, const int k_offset, const int j_of
 }
 
 
-static inline void macro_pack_A(const int *A, const int i_offset, const int k_offset, int*  packA){
+static inline void macro_pack_A(const int *A, const int i_offset, const int k_offset, int* restrict packA){
    for (int ib = 0; ib < block_size/MR; ib++) {
         int i0 = i_offset + ib * MR;
         int* restrict destA = packA + ib * KC * MR;
-        micro_pack_A(A, i0, KC, destA);
+        micro_pack_A(A, i0, k_offset, destA);
     }
 }
 
-static inline void macro_pack_B(const int *B, const int k_offset, const int j_offset, int*  packB){
+static inline void macro_pack_B(const int *B, const int k_offset, const int j_offset, int* restrict packB){
     for(int jb = 0; jb < block_size/NR; jb++){
         int j0 = j_offset + jb * NR;
         int* restrict destB = packB + jb * KC * NR;
@@ -92,7 +100,7 @@ static inline void macro_pack_B(const int *B, const int k_offset, const int j_of
 }
 
 
-void micro_level_matrix_multiply(int *A, int *B, int *C){
+void micro_level_matrix_multiply(int  * restrict A, int  * restrict B, int  *restrict C){
     
     A = (int *) __builtin_assume_aligned(A, 64);
     B = (int *) __builtin_assume_aligned(B, 64);
@@ -104,9 +112,14 @@ void micro_level_matrix_multiply(int *A, int *B, int *C){
     // int packA[MR*KC*block_size];
     // int packB[KC*NR*block_size];
 
-    int *packA = (int *) __builtin_alloca(MR * KC * block_size * sizeof(int));
-    int *packB = (int *) __builtin_alloca(KC * NR * block_size * sizeof(int));
+    // int *packA = (int *) __builtin_alloca(MR * KC * block_size * sizeof(int));
+    // int *packB = (int *) __builtin_alloca(KC * NR * block_size * sizeof(int));
 
+
+    int *restrict packA = NULL, *restrict packB = NULL;
+    if (ALLOC_ALIGNED(packA, KC*MC*sizeof(int)) || ALLOC_ALIGNED(packB, KC*NC*sizeof(int))) {
+        free(packA); free(packB); return;
+    }
     // for (int j = 0; j < N; j += NR) {
     //     for (int k = 0; k < N; k += KC) {
     //         micro_pack_B(B, k, j, packB);
