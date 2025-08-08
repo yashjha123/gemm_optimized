@@ -7,7 +7,8 @@
 
 // we divide the matrix multiplication operation into blocks
 #define block_size 512 // also refered to as b in README.m
-
+#define MC 512 // number of rows in the micro-kernel
+#define NC 512 // number of rows in the micro-kernel
 
 
 // we want the tiles to fit in shape for registers for the micro-kernel
@@ -24,13 +25,16 @@ static inline void microkernel_4x4(const int* micro_A, const int* micro_B, int* 
 
     for(int k = 0; k < KC; k++){
         int b[NR];
+        #pragma unroll
         for(int j = 0; j < NR; j++){
             b[j] = micro_B[k*NR + j];
         }
 
+        #pragma unroll
         for(int i = 0; i < MR; i++){
             const int a = micro_A[k*MR + i];
 
+            #pragma unroll
             for(int j = 0; j < NR; j++){
                 acc[i][j] += a * b[j];
             }
@@ -39,16 +43,18 @@ static inline void microkernel_4x4(const int* micro_A, const int* micro_B, int* 
 
     for(int i = 0; i < MR; i++){
         int *c_row = C + i * N;
+        #pragma unroll
         for(int j = 0; j < NR; j++){
             c_row[j] += acc[i][j];
         }
     }
 }
 
-static inline void micro_pack_A(const int *A, const int i_offset, const int k_offset, int*  packA){
+static inline void micro_pack_A(const int *A, const int i_offset, const int k_offset, int*restrict  packA){
     for(int k = 0; k < KC; k++){
         const int kk = k_offset + k;
         const int base = k * MR;
+        #pragma unroll
         for(int i = 0; i < MR; i++){
             const int ii = i_offset + i;
             packA[base + i]  = A[index(ii, kk)];
@@ -56,10 +62,11 @@ static inline void micro_pack_A(const int *A, const int i_offset, const int k_of
     }
 }
 
-static inline void micro_pack_B(const int *B, const int k_offset, const int j_offset, int*  packB){
+static inline void micro_pack_B(const int *B, const int k_offset, const int j_offset, int* restrict  packB){
     for(int k = 0; k < KC; k++){
         const int kk = k_offset + k;
         const int base = k * NR;
+        #pragma unroll
         for(int j = 0; j < NR; j++){
             const int jj = j_offset + j;
             packB[base + j]  = B[index(kk, jj)];
@@ -87,20 +94,46 @@ static inline void macro_pack_B(const int *B, const int k_offset, const int j_of
 
 void micro_level_matrix_multiply(int *A, int *B, int *C){
     
+    A = (int *) __builtin_assume_aligned(A, 64);
+    B = (int *) __builtin_assume_aligned(B, 64);
+    C = (int *) __builtin_assume_aligned(C, 64);
+
     int n = N / block_size; // small n (i.e. number of blocks)
     
 
-    int packA[MR*KC*block_size];
-    int packB[KC*NR*block_size];
+    // int packA[MR*KC*block_size];
+    // int packB[KC*NR*block_size];
 
-    for (int j = 0; j < N; j += NR) {
-        for (int k = 0; k < N; k += KC) {
-            micro_pack_B(B, k, j, packB);
-            for (int i = 0; i < N; i += MR) {
-                micro_pack_A(A, i, k, packA);
+    int *packA = (int *) __builtin_alloca(MR * KC * block_size * sizeof(int));
+    int *packB = (int *) __builtin_alloca(KC * NR * block_size * sizeof(int));
 
-                int *micro_c = &C[index(i, j)];
-                microkernel_4x4(packA, packB, micro_c);
+    // for (int j = 0; j < N; j += NR) {
+    //     for (int k = 0; k < N; k += KC) {
+    //         micro_pack_B(B, k, j, packB);
+    //         for (int i = 0; i < N; i += MR) {
+    //             micro_pack_A(A, i, k, packA);
+
+    //             int *micro_c = &C[index(i, j)];
+    //             microkernel_4x4(packA, packB, micro_c);
+    //         }
+    //     }
+    // }
+    for (int j0 = 0; j0 < N; j0 += NC){
+        for (int k0 = 0; k0 < N; k0 += KC){
+            macro_pack_B(B, k0, j0, packB);
+            for (int i0 = 0; i0 < N; i0 += MC){
+                macro_pack_A(A, i0, k0, packA);
+
+                for (int ib = 0; ib < MC; ib += MR){
+                    const int *restrict A_panel = packA + (ib / MR) * (KC * MR);
+
+                    for (int jb = 0; jb < NC; jb += NR){
+                        const int *restrict B_panel = packB + (jb / NR) * (KC * NR);
+
+                        int *restrict C_tile = &C[index(i0 + ib, j0 + jb)];
+                        microkernel_4x4(A_panel, B_panel, C_tile);
+                    }
+                }
             }
         }
     }
