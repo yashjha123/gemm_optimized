@@ -6,9 +6,10 @@
 #include "include/optimized_gemm.h"
 
 // we divide the matrix multiplication operation into blocks
-// #define block_size 512 // also refered to as b in README.m
-// #define MC 512 // number of rows in the micro-kernel
-// #define NC 512 // number of rows in the micro-kernel
+#define block_size 256 // also refered to as b in README.m, experimentally determined
+#define MC 512 // experimentally determined
+#define NC 1024 // experimentally determined
+
 
 
 // we want the tiles to fit in shape for registers for the micro-kernel
@@ -27,7 +28,9 @@
 #endif
 
 
-
+// The micro-kernel is the heart of the matrix multiplication algorithm. It is well-optimized
+// to perform the multiplication of small blocks of matrices A and B, and accumulate the results
+// into the C matrix, while the intermeddiate results be stored in the registers.
 static inline void microkernel_4x4(const int* micro_A, const int* micro_B, int* C){
     int acc[MR][NR] = {};
 
@@ -58,7 +61,51 @@ static inline void microkernel_4x4(const int* micro_A, const int* micro_B, int* 
     }
 }
 
-static inline void micro_pack_A(const int *A, const int i_offset, const int k_offset, int*restrict  packA){
+// static inline void microkernel_4x4(const int* restrict micro_A, const int* restrict micro_B, const int* restrict C){
+
+//     int c00=0, c01=0, c02=0, c03=0;
+//     int c10=0, c11=0, c12=0, c13=0;
+//     int c20=0, c21=0, c22=0, c23=0;
+//     int c30=0, c31=0, c32=0, c33=0;
+
+//     #pragma ivdep
+//     #pragma unroll 4
+//     for(int k = 0; k < KC; k++){
+//         const int* restrict Ak = micro_A + k*MR;
+//         const int* restrict Bk = micro_B + k*NR;
+
+//         const int a0 = Ak[0];
+//         const int a1 = Ak[1];
+//         const int a2 = Ak[2];
+//         const int a3 = Ak[3];
+
+//         const int b0 = Bk[0];
+//         const int b1 = Bk[1];
+//         const int b2 = Bk[2];
+//         const int b3 = Bk[3];
+
+
+//         c00 += a0 * b0; c01 += a0 * b1; c02 += a0 * b2; c03 += a0 * b3;
+//         c10 += a1 * b0; c11 += a1 * b1; c12 += a1 * b2; c13 += a1 * b3;
+//         c20 += a2 * b0; c21 += a2 * b1; c22 += a2 * b2; c23 += a2 * b3;
+//         c30 += a3 * b0; c31 += a3 * b1; c32 += a3 * b2; c33 += a3 * b3;
+//     }
+
+//     int* restrict c_row0 = (int*)C + N*0;
+//     int* restrict c_row1 = (int*)C + N*1;
+//     int* restrict c_row2 = (int*)C + N*2;
+//     int* restrict c_row3 = (int*)C + N*3;
+
+//     c_row0[0] += c00; c_row0[1] += c01; c_row0[2] += c02; c_row0[3] += c03;
+//     c_row1[0] += c10; c_row1[1] += c11; c_row1[2] += c12; c_row1[3] += c13;
+//     c_row2[0] += c20; c_row2[1] += c21; c_row2[2] += c22; c_row2[3] += c23;
+//     c_row3[0] += c30; c_row3[1] += c31; c_row3[2] += c32; c_row3[3] += c33;
+// }
+
+// micro packing creates micro-blocks of size MR X KC for the micro-kernel
+// it packs a block of A and B matrices into a format that the micro-kernel can
+// process efficiently. (in a linear fashion)
+static inline void micro_pack_A(const int *A, const int i_offset, const int k_offset, int* restrict  packA){
     for(int k = 0; k < KC; k++){
         const int kk = k_offset + k;
         const int base = k * MR;
@@ -70,6 +117,8 @@ static inline void micro_pack_A(const int *A, const int i_offset, const int k_of
     }
 }
 
+// micro packing is the same as above but for B matrix. Same ways, it packs the blocsk
+// so the micro-kernel can process it efficiently.
 static inline void micro_pack_B(const int *B, const int k_offset, const int j_offset, int* restrict  packB){
     for(int k = 0; k < KC; k++){
         const int kk = k_offset + k;
@@ -82,7 +131,7 @@ static inline void micro_pack_B(const int *B, const int k_offset, const int j_of
     }
 }
 
-
+// pack huge A blocks for blocking
 static inline void macro_pack_A(const int *A, const int i_offset, const int k_offset, int* restrict packA){
    for (int ib = 0; ib < block_size/MR; ib++) {
         int i0 = i_offset + ib * MR;
@@ -91,6 +140,7 @@ static inline void macro_pack_A(const int *A, const int i_offset, const int k_of
     }
 }
 
+// pack B block for blocking
 static inline void macro_pack_B(const int *B, const int k_offset, const int j_offset, int* restrict packB){
     for(int jb = 0; jb < block_size/NR; jb++){
         int j0 = j_offset + jb * NR;
@@ -102,6 +152,8 @@ static inline void macro_pack_B(const int *B, const int k_offset, const int j_of
 
 void micro_level_matrix_multiply(int  * restrict A, int  * restrict B, int  *restrict C){
     
+
+    // Assuming the correct alignment of the arrays ensure the data is processed 
     A = (int *) __builtin_assume_aligned(A, 64);
     B = (int *) __builtin_assume_aligned(B, 64);
     C = (int *) __builtin_assume_aligned(C, 64);
@@ -109,28 +161,13 @@ void micro_level_matrix_multiply(int  * restrict A, int  * restrict B, int  *res
     int n = N / block_size; // small n (i.e. number of blocks)
     
 
-    // int packA[MR*KC*block_size];
-    // int packB[KC*NR*block_size];
-
-    // int *packA = (int *) __builtin_alloca(MR * KC * block_size * sizeof(int));
-    // int *packB = (int *) __builtin_alloca(KC * NR * block_size * sizeof(int));
-
-
     int *restrict packA = NULL, *restrict packB = NULL;
     if (ALLOC_ALIGNED(packA, KC*MC*sizeof(int)) || ALLOC_ALIGNED(packB, KC*NC*sizeof(int))) {
         free(packA); free(packB); return;
     }
-    // for (int j = 0; j < N; j += NR) {
-    //     for (int k = 0; k < N; k += KC) {
-    //         micro_pack_B(B, k, j, packB);
-    //         for (int i = 0; i < N; i += MR) {
-    //             micro_pack_A(A, i, k, packA);
 
-    //             int *micro_c = &C[index(i, j)];
-    //             microkernel_4x4(packA, packB, micro_c);
-    //         }
-    //     }
-    // }
+
+
     for (int j0 = 0; j0 < N; j0 += NC){
         for (int k0 = 0; k0 < N; k0 += KC){
             macro_pack_B(B, k0, j0, packB);
@@ -150,31 +187,7 @@ void micro_level_matrix_multiply(int  * restrict A, int  * restrict B, int  *res
             }
         }
     }
-    // for(int jj = 0; jj <= n; jj+=block_size){
-    //     for(int kk = 0; kk <= n; kk+=block_size){
-    //         macro_pack_B(B, (jj-1)*block_size, (kk-1)*block_size, packB);
-    //         for(int ii = 0; ii <= n; ii+=block_size){
-    //             for(int j = 0; j < (jj*block_size); j+=NR){
-    //                 for(int k = (kk-1)*block_size; k < (kk*block_size); k+=KC){
-    //                     micro_pack_B(B, k, j, packB);
-    //                     for(int i = (ii-1)*block_size; i < (ii*block_size); i+=MR){
-    //                         micro_pack_A(A, i, k, packA);
-        
-        
-    //     // now we iterate the blocks of these matrices
 
-    //                         // C[index(i,j)] += A[index(i, k)] * B[index(k,j)];
-    //                         // should be hoisted
-
-
-                            
-
-    //                         int *micro_c = &C[index(i,j)];
-    //                         microkernel_4x4(packA, packB, micro_c);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+    free(packA);
+    free(packB);
 }
