@@ -2,11 +2,10 @@
 #include <stdlib.h>
 
 
-#include "include/loop_reorder_gemm.h"
 // #include "blocked_gemm.c"
 #include "include/optimized_gemm.h"
 #include "include/utils.h"
-#include "include/naive.h"
+#include "include/naive_gemm.h"
 #include "include/constants.h"
 
 #include <time.h>
@@ -20,10 +19,9 @@ int main(int argc, char *argv[]){
     // int *C = (int *)(malloc(N*N*sizeof(int)));
     
     int *A, *B, *C;
-    size_t align = 64;                 // 64-byte for AVX-512 safety
-    posix_memalign((void**)&A, align, N * N * sizeof(int));
-    posix_memalign((void**)&B, align, N * N * sizeof(int));
-    posix_memalign((void**)&C, align, N * N * sizeof(int));
+    ALLOC_ALIGNED(A, N * N * sizeof(int));
+    ALLOC_ALIGNED(B, N * N * sizeof(int));
+    ALLOC_ALIGNED(C, N * N * sizeof(int));
     
     int *ref = (int *)(malloc(N*N*sizeof(int)));
     
@@ -42,7 +40,7 @@ int main(int argc, char *argv[]){
 
 
     start = clock();
-    matrix_multiply_i_j_k(A, B, ref);
+    // matrix_multiply_i_j_k(A, B, ref);
     // matrix_multiply_k_i_j(A, B, ref);
 
 
@@ -51,7 +49,7 @@ int main(int argc, char *argv[]){
     // matrix_multiply_k_j_i(A,B,C);
     // matrix_multiply_j_i_k(A,B,C);
     // blocked_matrix_multiply(A, B, C);
-    // micro_level_matrix_multiply(A, B, C);
+    optimized_matrix_multiply(A, B, C);
     end = clock();
 
     double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;

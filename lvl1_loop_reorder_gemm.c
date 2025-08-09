@@ -1,4 +1,4 @@
-#include "include/naive.h"
+#include "include/naive_gemm.h"
 
 #define index(i, j) ((i) * N + (j))
 

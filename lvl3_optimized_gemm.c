@@ -21,11 +21,6 @@
 #define NR 4
 #define KC 256
 
-#if defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L
-  #define ALLOC_ALIGNED(ptr, bytes) posix_memalign((void**)&(ptr), 64, (bytes))
-#else
-  #define ALLOC_ALIGNED(ptr, bytes) ((ptr) = aligned_alloc(64, (bytes)), ((ptr)!=NULL?0:1))
-#endif
 
 
 // The micro-kernel is the heart of the matrix multiplication algorithm. It is well-optimized
@@ -150,8 +145,7 @@ static inline void macro_pack_B(const int *B, const int k_offset, const int j_of
 }
 
 
-void micro_level_matrix_multiply(int  * restrict A, int  * restrict B, int  *restrict C){
-    
+void optimized_matrix_multiply(int  * restrict A, int  * restrict B, int  *restrict C){
 
     // Assuming the correct alignment of the arrays ensure the data is processed 
     A = (int *) __builtin_assume_aligned(A, 64);
@@ -163,7 +157,7 @@ void micro_level_matrix_multiply(int  * restrict A, int  * restrict B, int  *res
 
     int *restrict packA = NULL, *restrict packB = NULL;
     if (ALLOC_ALIGNED(packA, KC*MC*sizeof(int)) || ALLOC_ALIGNED(packB, KC*NC*sizeof(int))) {
-        free(packA); free(packB); return;
+        return;
     }
 
 
@@ -188,6 +182,6 @@ void micro_level_matrix_multiply(int  * restrict A, int  * restrict B, int  *res
         }
     }
 
-    free(packA);
-    free(packB);
+    free((void*)packA);
+    free((void*)packB);
 }
