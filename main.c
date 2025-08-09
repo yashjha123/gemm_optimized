@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
 
 
     start = clock();
-    // matrix_multiply_i_j_k(A, B, ref);
+    matrix_multiply_i_j_k(A, B, ref);
     // matrix_multiply_k_i_j(A, B, ref);
 
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
     // matrix_multiply_k_j_i(A,B,C);
     // matrix_multiply_j_i_k(A,B,C);
     // blocked_matrix_multiply(A, B, C);
-    micro_level_matrix_multiply(A, B, C);
+    // micro_level_matrix_multiply(A, B, C);
     end = clock();
 
     double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;

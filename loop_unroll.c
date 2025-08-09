@@ -5,7 +5,7 @@
 // we divide the matrix multiplication operation into blocks
 
 
-#define block_size 256 // also refered to as b in README.md
+#define block_size 1024 // also refered to as b in README.md
 
 void blocked_matrix_multiply(int *A, int *B, int *C){
     
