@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
     // int C[N*N] = {0};
 
     for(int i = 0; i < N*N; i++){
-        A[i] = 1;
+        A[i] = i;
         B[i] = 1;
         C[i] = 0;
     }
@@ -46,11 +46,12 @@ int main(int argc, char *argv[]){
 
     start = clock();
 
-    #ifdef naive
-        naive_matrix_multiply(A, B, C);
-    #else
-        optimized_matrix_multiply(A, B, C);
-    #endif
+    // #ifdef naive
+        // naive_matrix_multiply(A, B, C);
+    // #else
+    //     optimized_matrix_multiply(A, B, C);
+    // #endif
+    
     // matrix_multiply_k_i_j(A, B, ref);
 
 
@@ -60,6 +61,8 @@ int main(int argc, char *argv[]){
     // matrix_multiply_j_i_k(A,B,C);
     // blocked_matrix_multiply(A, B, C);
     // optimized_matrix_multiply(A, B, C);
+
+    cache_oblivious_matrix_multiply(A, B, C);
     end = clock();
 
     double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;

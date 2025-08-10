@@ -11,6 +11,7 @@
 extern "C" {
 void optimized_matrix_multiply(int * A, int *B, int *C);
 void naive_matrix_multiply(int *A, int *B, int *C);
+void cache_oblivious_matrix_multiply(int *A, int *B, int *C);
 extern int N;
 // extern int MC;
 // extern int NC;
@@ -106,12 +107,47 @@ static void BM_OptimizedMM(benchmark::State &state) {
     // free(B.p);
     // free(C.p);
 }
+
+
+static void BM_CacheObliviousMM(benchmark::State &state) {
+    const int rnN = static_cast<int>(state.range(0));
+    N = rnN;
+
+    Matrix A(N), B(N), C(N);
+    std::memset(C.p, 0, N * N * sizeof(int));
+
+    cache_oblivious_matrix_multiply(A.p, B.p, C.p);
+    std::memset(C.p, 0, N * N * sizeof(int));
+    // int i = 0;
+    for (auto _ : state) {
+        // std::cout << i << std::endl;
+        state.PauseTiming();
+        std::memset(C.p, 0, N * N * sizeof(int));
+        state.ResumeTiming();
+        // std::cout << "Running" << std::endl;
+
+        cache_oblivious_matrix_multiply(A.p, B.p, C.p);
+
+        benchmark::DoNotOptimize(C.p);
+        benchmark::ClobberMemory();
+    }
+    ReportGflops(state);
+    // free(A.p);
+    // free(B.p);
+    // free(C.p);
+}
 BENCHMARK(BM_NaiveMM)
     ->ArgsProduct({{256,512,1024,2048}}) // tests for each of the sizes
     ->UseRealTime();
 
 
 BENCHMARK(BM_OptimizedMM)
+    ->ArgsProduct({{256,512,1024,2048}}) // tests for each of the sizes
+    ->UseRealTime();
+
+
+
+BENCHMARK(BM_CacheObliviousMM)
     ->ArgsProduct({{256,512,1024,2048}}) // tests for each of the sizes
     ->UseRealTime();
 

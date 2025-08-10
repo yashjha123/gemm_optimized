@@ -21,7 +21,7 @@ import re
 import sys
 
 # %%
-def analyze_benchmarks(data):
+# def analyze_benchmarks(data):
 
 
 # %%
@@ -37,6 +37,7 @@ bench_file = sys.argv[1]
 
 bench_file = "./bench_f.json"
 un_vectorized_bench_file = "./bench_no_vector_f.json"
+# cache_oblivious = "./bench_cache_oblivious.json"
 # %%
 
 with open(bench_file, 'r') as f:
@@ -44,6 +45,9 @@ with open(bench_file, 'r') as f:
 
 with open(un_vectorized_bench_file, 'r') as f:
     no_vector_data = json.load(f)
+
+# with open(cache_oblivious, 'r') as f:
+#     cache_oblivious_data = json.load(f)
     
 # %%
     

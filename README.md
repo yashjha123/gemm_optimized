@@ -1,8 +1,8 @@
-## Optimized Matrix Multiplication (GEMM) Algorithm
+## Optimizing Matrix Multiplication
 
 The source code can be found at [https://github.com/yashjha123/gemm_optimized](https://github.com/yashjha123/gemm_optimized)
 
-The widespread use of matrix multiplication algorithms in many scientific computing applications demands optimized implementations for their use cases. Matrix multiplication is defined as the product of two matrices, running operations across three dimensions. Fortunately, modern computer hardware provides excellent support for achieving significant performance gains. Realizing these performance improvements requires code that can leverage available resources and optimize memory usage, leading to better cache utilization, reduced memory bandwidth requirements, and improved parallelism—all working together to solve this optimization challenge. While the algorithm's complexity cannot be improved beyond O(n³) (or O(n^2.7) with Strassen's algorithm) and cannot be reduced asymptotically, the best approach is to maximize efficient use of available hardware resources.
+The widespread use of matrix multiplication algorithms in many scientific computing applications demands optimized implementations for their use cases. Matrix multiplication is defined as the product of two matrices, running operations across three dimensions. Fortunately, modern computer hardware provides excellent support for achieving significant performance gains. Realizing these performance improvements requires code that can leverage available resources and optimize memory usage, leading to better cache utilization, reduced memory bandwidth requirements, and improved parallelism—all working together to solve this optimization challenge.  While the algorithm's complexity cannot be improved beyond O(n³) (or O(n^2.7) with Strassen's algorithm) and cannot be reduced asymptotically, the next best approach will be to maximize efficient use of available hardware resources.
 
 Final optimized code is in the `lvl3_optimized_gemm.c` file, which contains the final implementation of the optimized GEMM algorithm. You can compile
 the benchmark using the following command:
@@ -38,10 +38,10 @@ Where ``A`` is defined as a square matrix of size ``N x N``
 
 ## How fast are we talking about?
 <!-- ![Execution Time vs Matrix Size N](lineplot_time.png "Execution Time vs Matrix Size N") -->
-<img src="lineplot_time.png" alt="Execution Time vs Matrix Size N" width="600"/>
+<img src="images/lineplot_time.png" alt="Execution Time vs Matrix Size N" width="600"/>
 <br />
 <!-- ![Boxplot of Execution Time vs Matrix Size N](boxplot_facet.png "Boxplot of Execution Time vs Matrix Size N") -->
-<img src="boxplot_facet.png" alt="Boxplot of Execution Time vs Matrix Size N" width="1200"/>
+<img src="images/boxplot_facet.png" alt="Boxplot of Execution Time vs Matrix Size N" width="1200"/>
 <br />
 Results show the optimizations provide a 45.1x speed-up over the naive implementation, with the optimized version running at 2.25 GFLOPS for a matrix size of 1024x1024. The naive implementation runs at 0.05 GFLOPS for the same matrix size.
 
@@ -156,7 +156,7 @@ The level of cache organization is as follows:
 
 
 <!-- ![Paper from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering](image.png "Pseudo code from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering") -->
-<img src="image.png" alt="Pseudo code from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering" width="600"/>
+<img src="images/pseudo.png" alt="Pseudo code from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering" width="600"/>
 
 
 Psuedo code from  ["Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering"](https://doi.org/10.1002/spe.3214)
@@ -196,35 +196,64 @@ CPU Caches:
 Load Average: 1.18, 1.57, 1.60
 ```
 
-<!-- 
-# Cache-Oblivious GEMM
-The final step in the optimization process is to implement a cache-oblivious GEMM algorithm.
-This algorithm is designed to work well with the CPU's cache hierarchy without explicitly blocking the matrices. -->
 
+# Cache-Oblivious GEMM
+Cache-oblivious algorithms are another class of algorithms designed to work well with the CPU's cache hierarchy without explicitly blocking the matrices. These algorithms are designed to be efficient across all levels of the cache hierarchy, from L1 to L3, without requiring any knowledge of the cache size or structure.
+
+The provided `lvl4_cache_oblivious.c` file implements a cache-oblivious matrix multiplication algorithm. The algorithm recursively divides the matrices into smaller submatrices, which fit into the CPU's cache, and performs the matrix multiplication on these submatrices. 
+
+Here is an illustration of how the cache-oblivious algorithm works:
+
+```cpp
+void cache_oblivious_matrix_multiply(int *A, int *B, int *C) {
+    if (N <= LEAF) {
+        C+= A * B;
+    } else {
+        int M1 = M / 2, M2 = M - M1;
+        int N1 = N / 2, N2 = N - N1;
+        cache_oblivious_matrix_multiply(A, B, C); // top-left
+        cache_oblivious_matrix_multiply(A + M1, B, C + M1 * ldc); // bottom-left
+        cache_oblivious_matrix_multiply(A, B + N1, C + N1); // top-right
+        cache_oblivious_matrix_multiply(A + M1, B + N1, C + M1 * ldc + N1); // bottom-right
+    }
+}
+```
+
+<img src="images/cache_oblivious.png" alt="Cache-Oblivious Matrix Multiplication" width="300"/>
+
+Source: [math.mit.edu: No Cache-based Performance Drops!](https://math.mit.edu/~stevenj/18.335/oblivious-matmul-handout.pdf)
+
+At every level of recursion, the algorithm checks if the size of the matrices is small enough to fit into the CPU's cache. If it is, it performs the matrix multiplication directly. If not, it divides the matrices into smaller submatrices and recursively calls itself on these submatrices. 
 
 
 ## Results
 
 
-<img src="GFLOPS_vs_N.png" alt="GFLOPS vs N" width="600"/>
+<img src="images/lineplot_gflops.png" alt="GFLOPS vs N" width="600"/>
 
-The vectorized version achieves ~29x better performance than the unvectorized optimized version, highlighting the massive impact of SIMD instructions (AVX2/FMA) on dense linear algebra. Even without vectorization, the optimized algorithm achieves ~4-8x better performance than naive, showing that algorithmic improvements (cache blocking, loop reordering) are crucial.
-
+The vectorized OptimizedMM is fastest at every size and stays almost flat, sustaining roughly 2.1–2.2×10^10 GFLOPS. The CacheObliviousMM is consistently second, but its throughput falls with N—from ~1.9×10¹⁰ at small N to ~1.2×10¹⁰ by the largest N.
+Without vectorization, the “optimized” kernel lands around ~0.8×10¹⁰ GFLOPS and is fairly flat, while the unvectorized NaiveMM is the slowest (~0.1×10¹⁰ GFLOPS) and degrades as N grows.
 <!-- ![alt text](./roofline_plot.png "Roofline Plot") -->
-<img src="roofline_plot.png" alt="Roofline Plot" width="600"/>
+<img src="images/roofline_plot.png" alt="Roofline Plot" width="600"/>
 
-The roofline plot demonstrates the effectiveness of GEMM optimizations, showing naive implementations achieving only ~1 GFLOPS while optimized versions reach ~2-3 GFLOPS at arithmetic intensities of 100-200 FLOPs/Byte. The optimized implementations successfully transition from the memory-bound to compute-bound region, indicating efficient utilization of cache hierarchy and computational resources. 
+The roofline plot demonstrates the effectiveness of GEMM optimizations, showing naive implementations achieving only ~1 GFLOPS while optimized versions reach ~2-3 GFLOPS at arithmetic intensities of 100-200 FLOPs/Byte. The optimized implementations successfully transition from the memory-bound to compute-bound region, indicating efficient utilization of cache hierarchy and computational resources. The cache-oblivious implementation attains ~1–2 GFLOPS in the same arithmetic intensity range, outperforming naive methods and benefiting from better cache use, but still trailing the fully optimized kernel due to less aggressive vectorization and blocking.
+
 <!-- ![cache-miss comparison](cache_miss_comparison.png "Cache Miss Comparison") -->
 
-<img src="cache_miss_comparison.png" alt="Cache Miss Comparison" width="600"/>
+<img src="images/cache_miss_comparison.png" alt="Cache Miss Comparison" width="600"/>
 
 
-The optimized version consistently achieves dramatic reductions in cache misses across all matrix sizes, with improvement ratios ranging from 462x to 904x better than the naive implementation. The naive implementation suffers from high cache misses due to poor memory access patterns, shows exponential growth in cache misses as matrix size increases, reaching nearly 10 billion cache misses at N=2048. In contrast, the optimized version maintains a much lower and stable cache miss counts, staying under 10 million cache misses even at the largest size. This significant reduction in cache misses is a key factor contributing to the performance improvements observed in the optimized GEMM implementation.
+The optimized version consistently achieves dramatic reductions in cache misses across all matrix sizes, with improvement ratios ranging from 462× to 904× better than the naïve implementation. The naïve implementation suffers from high cache misses due to poor memory access patterns, showing exponential growth in cache misses as matrix size increases, reaching nearly 10 billion at N=2048. The cache-oblivious implementation also delivers substantial reductions in cache misses, improving on the naive version by roughly 11x to 47x, because of its recursive divide-and-conquer structure, though it still trails the fully optimized version. In contrast, the optimized kernel maintains a much lower and stable cache miss count, staying under 10 million even at the largest size, and this significant reduction in memory traffic is a key factor contributing to the performance improvements observed in the optimized GEMM implementation.
 
+<img src="images/lineplot_time.png" alt="Execution Time vs Matrix Size N" width="600"/>
+Execution time grows steeply with N for all methods, as expected for O(N³) work.
+The optimized (blocked + vectorized) kernel is fastest across all sizes, while the cache-oblivious version is consistently second. Optimized (unvectorized) lands between them and the naive codes, thus blocking helps, but SIMD is needed to reach the best times. Both naive implementations are slowest (nearly overlapping) and their runtimes explode at large N, reflecting poor locality.
 
 # Conclusion
-The optimized GEMM implementation achieves significant performance improvements over the naive implementation, with a 45.1x speedup and a peak performance of 2.25 GFLOPS for a matrix size of 1024x1024. The optimizations include loop reordering, blocking, micro-kernel optimizations, and vectorization. The final implementation is able to efficiently utilize the CPU's cache hierarchy, leading to better cache usage and reduced memory bandwidth requirements. The results demonstrate the effectiveness of these optimizations in achieving high performance for matrix multiplication operations.
-The code is available in the `lvl3_optimized_gemm.c` file, which contains the final implementation of the optimized GEMM algorithm.
+The optimized GEMM implementation achieves significant performance improvements over the naïve implementation, with a 45.1× speedup and a peak performance of 2.25 GFLOPS for a 1024×1024 matrix. These gains are driven by a combination of loop reordering, blocking, micro-kernel optimizations, and vectorization, which together enable the algorithm to exploit the CPU's cache hierarchy and SIMD capabilities effectively. The cache-oblivious implementation also demonstrates strong performance, outperforming the naïve version by leveraging a recursive divide-and-conquer structure that improves locality and reduces cache misses, although it remains ~30–40% slower than the fully optimized kernel due to less aggressive SIMD and blocking. Across all measurements—GFLOPS, roofline analysis, cache misses, and execution time, the results confirm that careful control over data movement, memory access patterns, and vectorization are critical for high-performance GEMM. 
+
+The final `lvl3_optimized_gemm.c` implementation represents a robust, compute-bound solution that maximizes throughput while minimizing memory traffic, serving as an effective baseline for further parallel or architecture-specific tuning.
+
 
 Best,
 Yash Jha
