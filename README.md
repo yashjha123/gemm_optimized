@@ -1,5 +1,7 @@
 ## Optimized Matrix Multiplication (GEMM) Algorithm
 
+The source code can be found at [https://github.com/yashjha123/gemm_optimized](https://github.com/yashjha123/gemm_optimized)
+
 The widespread use of matrix multiplication algorithms in many scientific computing applications demands optimized implementations for their use cases. Matrix multiplication is defined as the product of two matrices, running operations across three dimensions. Fortunately, modern computer hardware provides excellent support for achieving significant performance gains. Realizing these performance improvements requires code that can leverage available resources and optimize memory usage, leading to better cache utilization, reduced memory bandwidth requirements, and improved parallelism—all working together to solve this optimization challenge. While the algorithm's complexity cannot be improved beyond O(n³) (or O(n^2.7) with Strassen's algorithm) and cannot be reduced asymptotically, the best approach is to maximize efficient use of available hardware resources.
 
 Final optimized code is in the `lvl3_optimized_gemm.c` file, which contains the final implementation of the optimized GEMM algorithm. You can compile
@@ -194,10 +196,10 @@ CPU Caches:
 Load Average: 1.18, 1.57, 1.60
 ```
 
-
+<!-- 
 # Cache-Oblivious GEMM
 The final step in the optimization process is to implement a cache-oblivious GEMM algorithm.
-This algorithm is designed to work well with the CPU's cache hierarchy without explicitly blocking the matrices.
+This algorithm is designed to work well with the CPU's cache hierarchy without explicitly blocking the matrices. -->
 
 
 
