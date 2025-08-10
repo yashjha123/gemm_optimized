@@ -2,7 +2,7 @@
 
 #include "include/constants.h" // constants define the N
 #include "include/utils.h" // constants define the N
-
+#include <stdlib.h>
 #include "include/optimized_gemm.h"
 
 // we divide the matrix multiplication operation into blocks

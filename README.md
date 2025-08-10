@@ -35,10 +35,12 @@ Where ``A`` is defined as a square matrix of size ``N x N``
         ``C`` is the result of the operations is also of size ``N x N``
 
 ## How fast are we talking about?
-![Execution Time vs Matrix Size N](lineplot_time.png "Execution Time vs Matrix Size N")
-
-![Boxplot of Execution Time vs Matrix Size N](boxplot_facet.png "Boxplot of Execution Time vs Matrix Size N")
-
+<!-- ![Execution Time vs Matrix Size N](lineplot_time.png "Execution Time vs Matrix Size N") -->
+<img src="lineplot_time.png" alt="Execution Time vs Matrix Size N" width="600"/>
+<br />
+<!-- ![Boxplot of Execution Time vs Matrix Size N](boxplot_facet.png "Boxplot of Execution Time vs Matrix Size N") -->
+<img src="boxplot_facet.png" alt="Boxplot of Execution Time vs Matrix Size N" width="1200"/>
+<br />
 Results show the optimizations provide a 45.1x speed-up over the naive implementation, with the optimized version running at 2.25 GFLOPS for a matrix size of 1024x1024. The naive implementation runs at 0.05 GFLOPS for the same matrix size.
 
 This is possible due to the optimizations made to the algorithm, which include loop reordering, blocking, and micro-kernel optimizations. The optimized version also takes advantage of the CPU's cache hierarchy, allowing for better cache usage and reduced memory bandwidth.
@@ -151,9 +153,11 @@ The level of cache organization is as follows:
 - L3: reuse B_panel across many Mr tiles and all ic sweeps over M
 
 
-![Paper from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering](image.png "Pseudo code from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering")
+<!-- ![Paper from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering](image.png "Pseudo code from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering") -->
+<img src="image.png" alt="Pseudo code from Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering" width="600"/>
 
-Psuedo code from ["Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering"](https://doi.org/10.1002/spe.3214)
+
+Psuedo code from  ["Fast Matrix Multiplication via Compiler-only Layered Data Reorganization and Intrinsic Lowering"](https://doi.org/10.1002/spe.3214)
 
 
 
@@ -191,16 +195,34 @@ Load Average: 1.18, 1.57, 1.60
 ```
 
 
-![alt text](GFLOPS_vs_N.png "GFLOPS vs N")
-
-![alt text](./roofline_plot.png "Roofline Plot")
-
-
-The roofline plot demonstrates the effectiveness of GEMM optimizations, showing naive implementations achieving only ~1 GFLOPS while optimized versions reach ~2-3 GFLOPS at arithmetic intensities of 100-200 FLOPs/Byte. The optimized implementations successfully transition from the memory-bound to compute-bound region, indicating efficient utilization of cache hierarchy and computational resources. 
-
 # Cache-Oblivious GEMM
 The final step in the optimization process is to implement a cache-oblivious GEMM algorithm.
 This algorithm is designed to work well with the CPU's cache hierarchy without explicitly blocking the matrices.
 
 
 
+## Results
+
+
+<img src="GFLOPS_vs_N.png" alt="GFLOPS vs N" width="600"/>
+
+The vectorized version achieves ~29x better performance than the unvectorized optimized version, highlighting the massive impact of SIMD instructions (AVX2/FMA) on dense linear algebra. Even without vectorization, the optimized algorithm achieves ~4-8x better performance than naive, showing that algorithmic improvements (cache blocking, loop reordering) are crucial.
+
+<!-- ![alt text](./roofline_plot.png "Roofline Plot") -->
+<img src="roofline_plot.png" alt="Roofline Plot" width="600"/>
+
+The roofline plot demonstrates the effectiveness of GEMM optimizations, showing naive implementations achieving only ~1 GFLOPS while optimized versions reach ~2-3 GFLOPS at arithmetic intensities of 100-200 FLOPs/Byte. The optimized implementations successfully transition from the memory-bound to compute-bound region, indicating efficient utilization of cache hierarchy and computational resources. 
+<!-- ![cache-miss comparison](cache_miss_comparison.png "Cache Miss Comparison") -->
+
+<img src="cache_miss_comparison.png" alt="Cache Miss Comparison" width="600"/>
+
+
+The optimized version consistently achieves dramatic reductions in cache misses across all matrix sizes, with improvement ratios ranging from 462x to 904x better than the naive implementation. The naive implementation suffers from high cache misses due to poor memory access patterns, shows exponential growth in cache misses as matrix size increases, reaching nearly 10 billion cache misses at N=2048. In contrast, the optimized version maintains a much lower and stable cache miss counts, staying under 10 million cache misses even at the largest size. This significant reduction in cache misses is a key factor contributing to the performance improvements observed in the optimized GEMM implementation.
+
+
+# Conclusion
+The optimized GEMM implementation achieves significant performance improvements over the naive implementation, with a 45.1x speedup and a peak performance of 2.25 GFLOPS for a matrix size of 1024x1024. The optimizations include loop reordering, blocking, micro-kernel optimizations, and vectorization. The final implementation is able to efficiently utilize the CPU's cache hierarchy, leading to better cache usage and reduced memory bandwidth requirements. The results demonstrate the effectiveness of these optimizations in achieving high performance for matrix multiplication operations.
+The code is available in the `lvl3_optimized_gemm.c` file, which contains the final implementation of the optimized GEMM algorithm.
+
+Best,
+Yash Jha
