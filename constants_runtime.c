@@ -1,0 +1,1 @@
+int N = 0; // default value, can be set later

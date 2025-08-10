@@ -1,4 +1,5 @@
 #include "include/naive_gemm.h"
+#include "include/optimized_gemm.h"
 
 #define index(i, j) ((i) * N + (j))
 

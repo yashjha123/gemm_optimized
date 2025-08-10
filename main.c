@@ -19,11 +19,11 @@ int main(int argc, char *argv[]){
     // int *C = (int *)(malloc(N*N*sizeof(int)));
     
     int *A, *B, *C;
-    ALLOC_ALIGNED(A, N * N * sizeof(int));
-    ALLOC_ALIGNED(B, N * N * sizeof(int));
-    ALLOC_ALIGNED(C, N * N * sizeof(int));
+    // alloc_aligned_64(&A, N * N * sizeof(int));
+    // alloc_aligned_64(&B, N * N * sizeof(int));
+    // alloc_aligned_64(&C, N * N * sizeof(int));
     
-    int *ref = (int *)(malloc(N*N*sizeof(int)));
+    // int *ref = (int *)(malloc(N*N*sizeof(int)));
     
     // int A[N*N] = {0};
     // int B[N*N] = {0};

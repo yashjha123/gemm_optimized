@@ -7,8 +7,8 @@
 
 // we divide the matrix multiplication operation into blocks
 #define block_size 256 // also refered to as b in README.m, experimentally determined
-#define MC 512 // experimentally determined
-#define NC 1024 // experimentally determined
+#define MC 256 // experimentally determined
+#define NC 256 // experimentally determined
 
 
 
@@ -182,6 +182,6 @@ void optimized_matrix_multiply(int  * restrict A, int  * restrict B, int  *restr
         }
     }
 
-    free((void*)packA);
-    free((void*)packB);
+    // free((void*)packA);
+    // free((void*)packB);
 }
