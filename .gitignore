@@ -1,1 +1,6 @@
 *.out
+perf_results/
+result*
+*.json
+bench_gemm
+*.pdf
