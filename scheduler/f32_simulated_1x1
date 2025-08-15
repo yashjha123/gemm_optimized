@@ -1,0 +1,137 @@
+Iterations:        100
+Instructions:      200
+Total Cycles:      403
+Total uOps:        300
+
+Dispatch Width:    6
+uOps Per Cycle:    0.74
+IPC:               0.50
+Block RThroughput: 0.5
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      4     0.50                        mulss	%xmm1, %xmm0
+ 2      7     0.50                  U     retq
+
+
+Dynamic Dispatch Stall Cycles:
+RAT     - Register unavailable:                      0
+RCU     - Retire tokens unavailable:                 0
+SCHEDQ  - Scheduler full:                            0
+LQ      - Load queue full:                           0
+SQ      - Store queue full:                          0
+GROUP   - Static restrictions on the dispatch group: 0
+USH     - Uncategorised Structural Hazard:           0
+
+
+Dispatch Logic - number of cycles where we saw N micro opcodes dispatched:
+[# dispatched], [# cycles]
+ 0,              353  (87.6%)
+ 6,              50  (12.4%)
+
+
+Schedulers - number of cycles where we saw N micro opcodes issued:
+[# issued], [# cycles]
+ 0,          266  (66.0%)
+ 1,          87  (21.6%)
+ 4,          37  (9.2%)
+ 5,          13  (3.2%)
+
+Scheduler's queue usage:
+[1] Resource name.
+[2] Average number of used buffer entries.
+[3] Maximum number of used buffer entries.
+[4] Total number of buffer entries.
+
+ [1]            [2]        [3]        [4]
+ADLPPort00_01_05_06_10 43   89         112
+ADLPPort02_03_07_08_11 0    2          72
+ADLPPort04_09    0          0          48
+
+
+Retire Control Unit - number of cycles where we saw N instructions retired:
+[# retired], [# cycles]
+ 0,           302  (74.9%)
+ 1,           2  (0.5%)
+ 2,           99  (24.6%)
+
+Total ROB Entries:                512
+Max Used ROB Entries:             267  ( 52.1% )
+Average Used ROB Entries per cy:  133  ( 26.0% )
+
+
+Register File statistics:
+Total number of mappings created:    100
+Max number of mappings used:         89
+
+
+Resources:
+[0]   - ADLPPort00
+[1]   - ADLPPort01
+[2]   - ADLPPort02
+[3]   - ADLPPort03
+[4]   - ADLPPort04
+[5]   - ADLPPort05
+[6]   - ADLPPort06
+[7]   - ADLPPort07
+[8]   - ADLPPort08
+[9]   - ADLPPort09
+[10]  - ADLPPort10
+[11]  - ADLPPort11
+[12]  - ADLPPortInvalid
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   
+0.93   0.57   0.33   0.33    -      -     0.50    -      -      -      -     0.34    -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   Instructions:
+0.43   0.57    -      -      -      -      -      -      -      -      -      -      -     mulss	%xmm1, %xmm0
+0.50    -     0.33   0.33    -      -     0.50    -      -      -      -     0.34    -     retq
+
+
+Timeline view:
+                    0123456789          0123456789   
+Index     0123456789          0123456789          012
+
+[0,0]     DeeeeER   .    .    .    .    .    .    . .   mulss	%xmm1, %xmm0
+[0,1]     DeeeeeeeER.    .    .    .    .    .    . .   retq
+[1,0]     D====eeeeER    .    .    .    .    .    . .   mulss	%xmm1, %xmm0
+[1,1]     DeeeeeeeE-R    .    .    .    .    .    . .   retq
+[2,0]     .D=======eeeeER.    .    .    .    .    . .   mulss	%xmm1, %xmm0
+[2,1]     .DeeeeeeeE----R.    .    .    .    .    . .   retq
+[3,0]     .D===========eeeeER .    .    .    .    . .   mulss	%xmm1, %xmm0
+[3,1]     .DeeeeeeeE--------R .    .    .    .    . .   retq
+[4,0]     . D==============eeeeER  .    .    .    . .   mulss	%xmm1, %xmm0
+[4,1]     . DeeeeeeeE-----------R  .    .    .    . .   retq
+[5,0]     . D==================eeeeER   .    .    . .   mulss	%xmm1, %xmm0
+[5,1]     . DeeeeeeeE---------------R   .    .    . .   retq
+[6,0]     .  D=====================eeeeER    .    . .   mulss	%xmm1, %xmm0
+[6,1]     .  DeeeeeeeE------------------R    .    . .   retq
+[7,0]     .  D=========================eeeeER.    . .   mulss	%xmm1, %xmm0
+[7,1]     .  DeeeeeeeE----------------------R.    . .   retq
+[8,0]     .   D============================eeeeER . .   mulss	%xmm1, %xmm0
+[8,1]     .   DeeeeeeeE-------------------------R . .   retq
+[9,0]     .   D================================eeeeER   mulss	%xmm1, %xmm0
+[9,1]     .   DeeeeeeeE-----------------------------R   retq
+
+
+Average Wait times (based on the timeline view):
+[0]: Executions
+[1]: Average time spent waiting in a scheduler's queue
+[2]: Average time spent waiting in a scheduler's queue while ready
+[3]: Average time elapsed from WB until retire stage
+
+      [0]    [1]    [2]    [3]
+0.     10    17.0   0.1    0.0       mulss	%xmm1, %xmm0
+1.     10    1.0    1.0    13.3      retq
+       10    9.0    0.6    6.7       <total>

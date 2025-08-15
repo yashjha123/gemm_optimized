@@ -1,0 +1,554 @@
+Iterations:        100
+Instructions:      6000
+Total Cycles:      1674
+Total uOps:        4600
+
+Dispatch Width:    6
+uOps Per Cycle:    2.75
+IPC:               3.58
+Block RThroughput: 14.0
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 0      1     0.00                        movaps	%xmm0, %xmm9
+ 0      1     0.00                        movaps	%xmm4, %xmm0
+ 1      1     0.50                        shufps	$0, %xmm4, %xmm0
+ 1      4     0.50                        mulps	%xmm9, %xmm0
+ 0      1     0.00                        movaps	%xmm4, %xmm8
+ 1      1     0.50                        shufps	$85, %xmm4, %xmm8
+ 1      4     0.50                        mulps	%xmm1, %xmm8
+ 1      3     0.50                        addps	%xmm0, %xmm8
+ 0      1     0.00                        movaps	%xmm4, %xmm0
+ 1      1     0.50                        shufps	$170, %xmm4, %xmm0
+ 1      4     0.50                        mulps	%xmm2, %xmm0
+ 1      3     0.50                        addps	%xmm8, %xmm0
+ 1      1     0.50                        shufps	$255, %xmm4, %xmm4
+ 1      4     0.50                        mulps	%xmm3, %xmm4
+ 1      3     0.50                        addps	%xmm4, %xmm0
+ 0      1     0.00                        movaps	%xmm5, %xmm4
+ 1      1     0.50                        shufps	$0, %xmm5, %xmm4
+ 1      4     0.50                        mulps	%xmm9, %xmm4
+ 0      1     0.00                        movaps	%xmm5, %xmm10
+ 1      1     0.50                        shufps	$85, %xmm5, %xmm10
+ 1      4     0.50                        mulps	%xmm1, %xmm10
+ 1      3     0.50                        addps	%xmm4, %xmm10
+ 0      1     0.00                        movaps	%xmm5, %xmm8
+ 1      1     0.50                        shufps	$170, %xmm5, %xmm8
+ 1      4     0.50                        mulps	%xmm2, %xmm8
+ 1      3     0.50                        addps	%xmm10, %xmm8
+ 1      1     0.50                        shufps	$255, %xmm5, %xmm5
+ 1      4     0.50                        mulps	%xmm3, %xmm5
+ 1      3     0.50                        addps	%xmm5, %xmm8
+ 0      1     0.00                        movaps	%xmm6, %xmm4
+ 1      1     0.50                        shufps	$0, %xmm6, %xmm4
+ 1      4     0.50                        mulps	%xmm9, %xmm4
+ 0      1     0.00                        movaps	%xmm6, %xmm10
+ 1      1     0.50                        shufps	$85, %xmm6, %xmm10
+ 1      4     0.50                        mulps	%xmm1, %xmm10
+ 1      3     0.50                        addps	%xmm4, %xmm10
+ 0      1     0.00                        movaps	%xmm6, %xmm5
+ 1      1     0.50                        shufps	$170, %xmm6, %xmm5
+ 1      4     0.50                        mulps	%xmm2, %xmm5
+ 1      3     0.50                        addps	%xmm10, %xmm5
+ 1      1     0.50                        shufps	$255, %xmm6, %xmm6
+ 1      4     0.50                        mulps	%xmm3, %xmm6
+ 1      3     0.50                        addps	%xmm6, %xmm5
+ 0      1     0.00                        movaps	%xmm7, %xmm4
+ 1      1     0.50                        shufps	$0, %xmm7, %xmm4
+ 1      4     0.50                        mulps	%xmm9, %xmm4
+ 0      1     0.00                        movaps	%xmm7, %xmm6
+ 1      1     0.50                        shufps	$85, %xmm7, %xmm6
+ 1      4     0.50                        mulps	%xmm1, %xmm6
+ 1      3     0.50                        addps	%xmm4, %xmm6
+ 0      1     0.00                        movaps	%xmm7, %xmm1
+ 1      1     0.50                        shufps	$170, %xmm7, %xmm1
+ 1      4     0.50                        mulps	%xmm2, %xmm1
+ 1      3     0.50                        addps	%xmm6, %xmm1
+ 1      1     0.50                        shufps	$255, %xmm7, %xmm7
+ 1      4     0.50                        mulps	%xmm7, %xmm3
+ 1      3     0.50                        addps	%xmm1, %xmm3
+ 0      1     0.00                        movaps	%xmm8, %xmm1
+ 0      1     0.00                        movaps	%xmm5, %xmm2
+ 2      7     0.50                  U     retq
+
+
+Dynamic Dispatch Stall Cycles:
+RAT     - Register unavailable:                      0
+RCU     - Retire tokens unavailable:                 0
+SCHEDQ  - Scheduler full:                            1589  (94.9%)
+LQ      - Load queue full:                           0
+SQ      - Store queue full:                          0
+GROUP   - Static restrictions on the dispatch group: 0
+USH     - Uncategorised Structural Hazard:           0
+
+
+Dispatch Logic - number of cycles where we saw N micro opcodes dispatched:
+[# dispatched], [# cycles]
+ 0,              50  (3.0%)
+ 2,              565  (33.8%)
+ 3,              834  (49.8%)
+ 4,              191  (11.4%)
+ 6,              34  (2.0%)
+
+
+Schedulers - number of cycles where we saw N micro opcodes issued:
+[# issued], [# cycles]
+ 0,          7  (0.4%)
+ 1,          5  (0.3%)
+ 2,          588  (35.1%)
+ 3,          974  (58.2%)
+ 4,          3  (0.2%)
+ 5,          97  (5.8%)
+
+Scheduler's queue usage:
+[1] Resource name.
+[2] Average number of used buffer entries.
+[3] Maximum number of used buffer entries.
+[4] Total number of buffer entries.
+
+ [1]            [2]        [3]        [4]
+ADLPPort00_01_05_06_10 108  112        112
+ADLPPort02_03_07_08_11 0    1          72
+ADLPPort04_09    0          0          48
+
+
+Retire Control Unit - number of cycles where we saw N instructions retired:
+[# retired], [# cycles]
+ 0,           979  (58.5%)
+ 1,           66  (3.9%)
+ 2,           1  (0.1%)
+ 3,           210  (12.5%)
+ 4,           100  (6.0%)
+ 7,           17  (1.0%)
+ 9,           9  (0.5%)
+ 10,          37  (2.2%)
+ 11,          100  (6.0%)
+ 14,          74  (4.4%)
+ 25,          27  (1.6%)
+ 28,          45  (2.7%)
+ 29,          9  (0.5%)
+
+Total ROB Entries:                512
+Max Used ROB Entries:             159  ( 31.1% )
+Average Used ROB Entries per cy:  143  ( 27.9% )
+
+
+Register File statistics:
+Total number of mappings created:    5900
+Max number of mappings used:         204
+
+
+Resources:
+[0]   - ADLPPort00
+[1]   - ADLPPort01
+[2]   - ADLPPort02
+[3]   - ADLPPort03
+[4]   - ADLPPort04
+[5]   - ADLPPort05
+[6]   - ADLPPort06
+[7]   - ADLPPort07
+[8]   - ADLPPort08
+[9]   - ADLPPort09
+[10]  - ADLPPort10
+[11]  - ADLPPort11
+[12]  - ADLPPortInvalid
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   
+10.73  16.63  0.33   0.33    -     16.64  1.00    -      -      -      -     0.34    -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   Instructions:
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm0, %xmm9
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm4, %xmm0
+ -     0.53    -      -      -     0.47    -      -      -      -      -      -      -     shufps	$0, %xmm4, %xmm0
+1.00    -      -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm9, %xmm0
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm4, %xmm8
+ -     0.83    -      -      -     0.17    -      -      -      -      -      -      -     shufps	$85, %xmm4, %xmm8
+0.64   0.36    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm1, %xmm8
+ -      -      -      -      -     1.00    -      -      -      -      -      -      -     addps	%xmm0, %xmm8
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm4, %xmm0
+ -     0.80    -      -      -     0.20    -      -      -      -      -      -      -     shufps	$170, %xmm4, %xmm0
+1.00    -      -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm2, %xmm0
+ -      -      -      -      -     1.00    -      -      -      -      -      -      -     addps	%xmm8, %xmm0
+ -     0.83    -      -      -     0.17    -      -      -      -      -      -      -     shufps	$255, %xmm4, %xmm4
+0.90   0.10    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm3, %xmm4
+ -      -      -      -      -     1.00    -      -      -      -      -      -      -     addps	%xmm4, %xmm0
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm5, %xmm4
+ -     0.20    -      -      -     0.80    -      -      -      -      -      -      -     shufps	$0, %xmm5, %xmm4
+0.47   0.53    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm9, %xmm4
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm5, %xmm10
+ -     0.80    -      -      -     0.20    -      -      -      -      -      -      -     shufps	$85, %xmm5, %xmm10
+0.45   0.55    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm1, %xmm10
+ -     0.46    -      -      -     0.54    -      -      -      -      -      -      -     addps	%xmm4, %xmm10
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm5, %xmm8
+ -     0.28    -      -      -     0.72    -      -      -      -      -      -      -     shufps	$170, %xmm5, %xmm8
+0.74   0.26    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm2, %xmm8
+ -     0.46    -      -      -     0.54    -      -      -      -      -      -      -     addps	%xmm10, %xmm8
+ -     0.11    -      -      -     0.89    -      -      -      -      -      -      -     shufps	$255, %xmm5, %xmm5
+0.35   0.65    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm3, %xmm5
+ -     0.36    -      -      -     0.64    -      -      -      -      -      -      -     addps	%xmm5, %xmm8
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm6, %xmm4
+ -     0.88    -      -      -     0.12    -      -      -      -      -      -      -     shufps	$0, %xmm6, %xmm4
+0.55   0.45    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm9, %xmm4
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm6, %xmm10
+ -     0.21    -      -      -     0.79    -      -      -      -      -      -      -     shufps	$85, %xmm6, %xmm10
+0.62   0.38    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm1, %xmm10
+ -     0.10    -      -      -     0.90    -      -      -      -      -      -      -     addps	%xmm4, %xmm10
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm6, %xmm5
+ -     0.61    -      -      -     0.39    -      -      -      -      -      -      -     shufps	$170, %xmm6, %xmm5
+0.45   0.55    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm2, %xmm5
+ -     0.45    -      -      -     0.55    -      -      -      -      -      -      -     addps	%xmm10, %xmm5
+ -     0.54    -      -      -     0.46    -      -      -      -      -      -      -     shufps	$255, %xmm6, %xmm6
+0.72   0.28    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm3, %xmm6
+ -     0.01    -      -      -     0.99    -      -      -      -      -      -      -     addps	%xmm6, %xmm5
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm7, %xmm4
+ -     0.73    -      -      -     0.27    -      -      -      -      -      -      -     shufps	$0, %xmm7, %xmm4
+0.74   0.26    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm9, %xmm4
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm7, %xmm6
+ -     0.61    -      -      -     0.39    -      -      -      -      -      -      -     shufps	$85, %xmm7, %xmm6
+0.81   0.19    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm1, %xmm6
+ -     0.45    -      -      -     0.55    -      -      -      -      -      -      -     addps	%xmm4, %xmm6
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm7, %xmm1
+ -     0.36    -      -      -     0.64    -      -      -      -      -      -      -     shufps	$170, %xmm7, %xmm1
+0.81   0.19    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm2, %xmm1
+ -     0.19    -      -      -     0.81    -      -      -      -      -      -      -     addps	%xmm6, %xmm1
+ -     0.47    -      -      -     0.53    -      -      -      -      -      -      -     shufps	$255, %xmm7, %xmm7
+0.48   0.52    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm7, %xmm3
+ -     0.09    -      -      -     0.91    -      -      -      -      -      -      -     addps	%xmm1, %xmm3
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm8, %xmm1
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm5, %xmm2
+ -      -     0.33   0.33    -      -     1.00    -      -      -      -     0.34    -     retq
+
+
+Timeline view:
+                    0123456789          0123456789          0123456789          0123456789
+Index     0123456789          0123456789          0123456789          0123456789          
+
+[0,0]     DeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm0, %xmm9
+[0,1]     DeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm4, %xmm0
+[0,2]     D=eER.    .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$0, %xmm4, %xmm0
+[0,3]     D==eeeeER .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm0
+[0,4]     DeE-----R .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm4, %xmm8
+[0,5]     D=eE----R .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm4, %xmm8
+[0,6]     D==eeeeER .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm8
+[0,7]     D======eeeER   .    .    .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm0, %xmm8
+[0,8]     DeE--------R   .    .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm4, %xmm0
+[0,9]     D==eE------R   .    .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$170, %xmm4, %xmm0
+[0,10]    .D==eeeeE--R   .    .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm0
+[0,11]    .D========eeeER.    .    .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm8, %xmm0
+[0,12]    .D==eE--------R.    .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$255, %xmm4, %xmm4
+[0,13]    .D===eeeeE----R.    .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm3, %xmm4
+[0,14]    .D===========eeeER  .    .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm0
+[0,15]    .DeE-------------R  .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm5, %xmm4
+[0,16]    .D==eE-----------R  .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$0, %xmm5, %xmm4
+[0,17]    . D==eeeeE-------R  .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm4
+[0,18]    . DeE------------R  .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm5, %xmm10
+[0,19]    . D==eE----------R  .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm5, %xmm10
+[0,20]    . D===eeeeE------R  .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm10
+[0,21]    . D=======eeeE---R  .    .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm10
+[0,22]    . DeE------------R  .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm5, %xmm8
+[0,23]    . D===eE---------R  .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$170, %xmm5, %xmm8
+[0,24]    . D====eeeeE-----R  .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm8
+[0,25]    .  D=========eeeER  .    .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm10, %xmm8
+[0,26]    .  D==eE---------R  .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$255, %xmm5, %xmm5
+[0,27]    .  D===eeeeE-----R  .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm3, %xmm5
+[0,28]    .  D============eeeER    .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm5, %xmm8
+[0,29]    .  DeE--------------R    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm6, %xmm4
+[0,30]    .  D====eE----------R    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$0, %xmm6, %xmm4
+[0,31]    .  D=====eeeeE------R    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm4
+[0,32]    .   DeE-------------R    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm6, %xmm10
+[0,33]    .   D===eE----------R    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm6, %xmm10
+[0,34]    .   D====eeeeE------R    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm10
+[0,35]    .   D=========eeeE--R    .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm10
+[0,36]    .   DeE-------------R    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm6, %xmm5
+[0,37]    .   D====eE---------R    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$170, %xmm6, %xmm5
+[0,38]    .   D=====eeeeE-----R    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm5
+[0,39]    .   D============eeeER   .    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm10, %xmm5
+[0,40]    .    D=====eE--------R   .    .    .    .    .    .    .    .    .    .    .   .   shufps	$255, %xmm6, %xmm6
+[0,41]    .    D======eeeeE----R   .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm3, %xmm6
+[0,42]    .    D==============eeeER.    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm6, %xmm5
+[0,43]    .    DeE----------------R.    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm7, %xmm4
+[0,44]    .    D=====eE-----------R.    .    .    .    .    .    .    .    .    .    .   .   shufps	$0, %xmm7, %xmm4
+[0,45]    .    D======eeeeE-------R.    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm4
+[0,46]    .    DeE----------------R.    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm7, %xmm6
+[0,47]    .    D======eE----------R.    .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm7, %xmm6
+[0,48]    .    .D======eeeeE------R.    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm6
+[0,49]    .    .D==========eeeE---R.    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm6
+[0,50]    .    .DeE---------------R.    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm7, %xmm1
+[0,51]    .    .D========eE-------R.    .    .    .    .    .    .    .    .    .    .   .   shufps	$170, %xmm7, %xmm1
+[0,52]    .    .D=========eeeeE---R.    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm1
+[0,53]    .    .D=============eeeER.    .    .    .    .    .    .    .    .    .    .   .   addps	%xmm6, %xmm1
+[0,54]    .    .D=======eE--------R.    .    .    .    .    .    .    .    .    .    .   .   shufps	$255, %xmm7, %xmm7
+[0,55]    .    . D=======eeeeE----R.    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm7, %xmm3
+[0,56]    .    . D===============eeeER  .    .    .    .    .    .    .    .    .    .   .   addps	%xmm1, %xmm3
+[0,57]    .    . D===========eE------R  .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm8, %xmm1
+[0,58]    .    . D===============eE--R  .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm5, %xmm2
+[0,59]    .    . DeeeeeeeE-----------R  .    .    .    .    .    .    .    .    .    .   .   retq
+[1,0]     .    . D========eE---------R  .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm0, %xmm9
+[1,1]     .    . D========eE---------R  .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm4, %xmm0
+[1,2]     .    . D==========eE-------R  .    .    .    .    .    .    .    .    .    .   .   shufps	$0, %xmm4, %xmm0
+[1,3]     .    . D===========eeeeE---R  .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm0
+[1,4]     .    .  D=======eE---------R  .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm4, %xmm8
+[1,5]     .    .  D=========eE-------R  .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm4, %xmm8
+[1,6]     .    .  D===========eeeeE--R  .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm8
+[1,7]     .    .  D===============eeeER .    .    .    .    .    .    .    .    .    .   .   addps	%xmm0, %xmm8
+[1,8]     .    .  D=======eE----------R .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm4, %xmm0
+[1,9]     .    .  D==========eE-------R .    .    .    .    .    .    .    .    .    .   .   shufps	$170, %xmm4, %xmm0
+[1,10]    .    .  D===============eeeeER.    .    .    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm0
+[1,11]    .    .  D===================eeeER  .    .    .    .    .    .    .    .    .   .   addps	%xmm8, %xmm0
+[1,12]    .    .   D======eE--------------R  .    .    .    .    .    .    .    .    .   .   shufps	$255, %xmm4, %xmm4
+[1,13]    .    .   D================eeeeE-R  .    .    .    .    .    .    .    .    .   .   mulps	%xmm3, %xmm4
+[1,14]    .    .   D=====================eeeER    .    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm0
+[1,15]    .    .   D=============eE----------R    .    .    .    .    .    .    .    .   .   movaps	%xmm5, %xmm4
+[1,16]    .    .   D==============eE---------R    .    .    .    .    .    .    .    .   .   shufps	$0, %xmm5, %xmm4
+[1,17]    .    .   D===============eeeeE-----R    .    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm4
+[1,18]    .    .   D=============eE----------R    .    .    .    .    .    .    .    .   .   movaps	%xmm5, %xmm10
+[1,19]    .    .   D===============eE--------R    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm5, %xmm10
+[1,20]    .    .    D===============eeeeE----R    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm10
+[1,21]    .    .    D===================eeeE-R    .    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm10
+[1,22]    .    .    D============eE----------R    .    .    .    .    .    .    .    .   .   movaps	%xmm5, %xmm8
+[1,23]    .    .    D==============eE--------R    .    .    .    .    .    .    .    .   .   shufps	$170, %xmm5, %xmm8
+[1,24]    .    .    D================eeeeE---R    .    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm8
+[1,25]    .    .    D======================eeeER  .    .    .    .    .    .    .    .   .   addps	%xmm10, %xmm8
+[1,26]    .    .    D============eE------------R  .    .    .    .    .    .    .    .   .   shufps	$255, %xmm5, %xmm5
+[1,27]    .    .    .D===============eeeeE-----R  .    .    .    .    .    .    .    .   .   mulps	%xmm3, %xmm5
+[1,28]    .    .    .D========================eeeER    .    .    .    .    .    .    .   .   addps	%xmm5, %xmm8
+[1,29]    .    .    .D========eE------------------R    .    .    .    .    .    .    .   .   movaps	%xmm6, %xmm4
+[1,30]    .    .    .D=========eE-----------------R    .    .    .    .    .    .    .   .   shufps	$0, %xmm6, %xmm4
+[1,31]    .    .    .D==========eeeeE-------------R    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm4
+[1,32]    .    .    .D========eE------------------R    .    .    .    .    .    .    .   .   movaps	%xmm6, %xmm10
+[1,33]    .    .    .D=========eE-----------------R    .    .    .    .    .    .    .   .   shufps	$85, %xmm6, %xmm10
+[1,34]    .    .    .D==========eeeeE-------------R    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm10
+[1,35]    .    .    . D=============eeeE----------R    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm10
+[1,36]    .    .    . D=======eE------------------R    .    .    .    .    .    .    .   .   movaps	%xmm6, %xmm5
+[1,37]    .    .    . D=========eE----------------R    .    .    .    .    .    .    .   .   shufps	$170, %xmm6, %xmm5
+[1,38]    .    .    . D===============eeeeE-------R    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm5
+[1,39]    .    .    . D===================eeeE----R    .    .    .    .    .    .    .   .   addps	%xmm10, %xmm5
+[1,40]    .    .    . D==============eE-----------R    .    .    .    .    .    .    .   .   shufps	$255, %xmm6, %xmm6
+[1,41]    .    .    . D===============eeeeE-------R    .    .    .    .    .    .    .   .   mulps	%xmm3, %xmm6
+[1,42]    .    .    .  D=====================eeeE-R    .    .    .    .    .    .    .   .   addps	%xmm6, %xmm5
+[1,43]    .    .    .  D=eE-----------------------R    .    .    .    .    .    .    .   .   movaps	%xmm7, %xmm4
+[1,44]    .    .    .  D=====eE-------------------R    .    .    .    .    .    .    .   .   shufps	$0, %xmm7, %xmm4
+[1,45]    .    .    .  D=======eeeeE--------------R    .    .    .    .    .    .    .   .   mulps	%xmm9, %xmm4
+[1,46]    .    .    .  D=eE-----------------------R    .    .    .    .    .    .    .   .   movaps	%xmm7, %xmm6
+[1,47]    .    .    .  D===============eE---------R    .    .    .    .    .    .    .   .   shufps	$85, %xmm7, %xmm6
+[1,48]    .    .    .  D================eeeeE-----R    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm6
+[1,49]    .    .    .  D====================eeeE--R    .    .    .    .    .    .    .   .   addps	%xmm4, %xmm6
+[1,50]    .    .    .   DeE-----------------------R    .    .    .    .    .    .    .   .   movaps	%xmm7, %xmm1
+[1,51]    .    .    .   D==============eE---------R    .    .    .    .    .    .    .   .   shufps	$170, %xmm7, %xmm1
+[1,52]    .    .    .   D===============eeeeE-----R    .    .    .    .    .    .    .   .   mulps	%xmm2, %xmm1
+[1,53]    .    .    .   D======================eeeER   .    .    .    .    .    .    .   .   addps	%xmm6, %xmm1
+[1,54]    .    .    .   DeE------------------------R   .    .    .    .    .    .    .   .   shufps	$255, %xmm7, %xmm7
+[1,55]    .    .    .   D==============eeeeE-------R   .    .    .    .    .    .    .   .   mulps	%xmm7, %xmm3
+[1,56]    .    .    .   D=========================eeeER.    .    .    .    .    .    .   .   addps	%xmm1, %xmm3
+[1,57]    .    .    .    D=======================eE---R.    .    .    .    .    .    .   .   movaps	%xmm8, %xmm1
+[1,58]    .    .    .    D======================eE----R.    .    .    .    .    .    .   .   movaps	%xmm5, %xmm2
+[1,59]    .    .    .    DeeeeeeeE--------------------R.    .    .    .    .    .    .   .   retq
+[2,0]     .    .    .    D==================eE--------R.    .    .    .    .    .    .   .   movaps	%xmm0, %xmm9
+[2,1]     .    .    .    D=========eE-----------------R.    .    .    .    .    .    .   .   movaps	%xmm4, %xmm0
+[2,2]     .    .    .    D===============eE-----------R.    .    .    .    .    .    .   .   shufps	$0, %xmm4, %xmm0
+[2,3]     .    .    .    D===================eeeeE----R.    .    .    .    .    .    .   .   mulps	%xmm9, %xmm0
+[2,4]     .    .    .    D=========eE-----------------R.    .    .    .    .    .    .   .   movaps	%xmm4, %xmm8
+[2,5]     .    .    .    D================eE----------R.    .    .    .    .    .    .   .   shufps	$85, %xmm4, %xmm8
+[2,6]     .    .    .    D========================eeeeER    .    .    .    .    .    .   .   mulps	%xmm1, %xmm8
+[2,7]     .    .    .    .D===========================eeeER .    .    .    .    .    .   .   addps	%xmm0, %xmm8
+[2,8]     .    .    .    .D========eE---------------------R .    .    .    .    .    .   .   movaps	%xmm4, %xmm0
+[2,9]     .    .    .    .D================eE-------------R .    .    .    .    .    .   .   shufps	$170, %xmm4, %xmm0
+[2,10]    .    .    .    .D======================eeeeE----R .    .    .    .    .    .   .   mulps	%xmm2, %xmm0
+[2,11]    .    .    .    .D==============================eeeER   .    .    .    .    .   .   addps	%xmm8, %xmm0
+[2,12]    .    .    .    .D=================eE---------------R   .    .    .    .    .   .   shufps	$255, %xmm4, %xmm4
+[2,13]    .    .    .    .D==========================eeeeE---R   .    .    .    .    .   .   mulps	%xmm3, %xmm4
+[2,14]    .    .    .    . D================================eeeER.    .    .    .    .   .   addps	%xmm4, %xmm0
+[2,15]    .    .    .    . D====================eE--------------R.    .    .    .    .   .   movaps	%xmm5, %xmm4
+[2,16]    .    .    .    . D=====================eE-------------R.    .    .    .    .   .   shufps	$0, %xmm5, %xmm4
+[2,17]    .    .    .    . D======================eeeeE---------R.    .    .    .    .   .   mulps	%xmm9, %xmm4
+[2,18]    .    .    .    . D====================eE--------------R.    .    .    .    .   .   movaps	%xmm5, %xmm10
+[2,19]    .    .    .    . D=====================eE-------------R.    .    .    .    .   .   shufps	$85, %xmm5, %xmm10
+[2,20]    .    .    .    . D=======================eeeeE--------R.    .    .    .    .   .   mulps	%xmm1, %xmm10
+[2,21]    .    .    .    . D===========================eeeE-----R.    .    .    .    .   .   addps	%xmm4, %xmm10
+[2,22]    .    .    .    .  D===================eE--------------R.    .    .    .    .   .   movaps	%xmm5, %xmm8
+[2,23]    .    .    .    .  D======================eE-----------R.    .    .    .    .   .   shufps	$170, %xmm5, %xmm8
+[2,24]    .    .    .    .  D=======================eeeeE-------R.    .    .    .    .   .   mulps	%xmm2, %xmm8
+[2,25]    .    .    .    .  D=============================eeeE--R.    .    .    .    .   .   addps	%xmm10, %xmm8
+[2,26]    .    .    .    .  D===================eE--------------R.    .    .    .    .   .   shufps	$255, %xmm5, %xmm5
+[2,27]    .    .    .    .  D========================eeeeE------R.    .    .    .    .   .   mulps	%xmm3, %xmm5
+[2,28]    .    .    .    .  D================================eeeER    .    .    .    .   .   addps	%xmm5, %xmm8
+[2,29]    .    .    .    .   D=================eE----------------R    .    .    .    .   .   movaps	%xmm6, %xmm4
+[2,30]    .    .    .    .   D==================eE---------------R    .    .    .    .   .   shufps	$0, %xmm6, %xmm4
+[2,31]    .    .    .    .   D=====================eeeeE---------R    .    .    .    .   .   mulps	%xmm9, %xmm4
+[2,32]    .    .    .    .   D=================eE----------------R    .    .    .    .   .   movaps	%xmm6, %xmm10
+[2,33]    .    .    .    .   D======================eE-----------R    .    .    .    .   .   shufps	$85, %xmm6, %xmm10
+[2,34]    .    .    .    .   D========================eeeeE------R    .    .    .    .   .   mulps	%xmm1, %xmm10
+[2,35]    .    .    .    .   D============================eeeE---R    .    .    .    .   .   addps	%xmm4, %xmm10
+[2,36]    .    .    .    .   D=================eE----------------R    .    .    .    .   .   movaps	%xmm6, %xmm5
+[2,37]    .    .    .    .   D======================eE-----------R    .    .    .    .   .   shufps	$170, %xmm6, %xmm5
+[2,38]    .    .    .    .    D=======================eeeeE------R    .    .    .    .   .   mulps	%xmm2, %xmm5
+[2,39]    .    .    .    .    D==============================eeeER    .    .    .    .   .   addps	%xmm10, %xmm5
+[2,40]    .    .    .    .    D================eE----------------R    .    .    .    .   .   shufps	$255, %xmm6, %xmm6
+[2,41]    .    .    .    .    D========================eeeeE-----R    .    .    .    .   .   mulps	%xmm3, %xmm6
+[2,42]    .    .    .    .    D=================================eeeER .    .    .    .   .   addps	%xmm6, %xmm5
+[2,43]    .    .    .    .    DeE-----------------------------------R .    .    .    .   .   movaps	%xmm7, %xmm4
+[2,44]    .    .    .    .    D==============eE---------------------R .    .    .    .   .   shufps	$0, %xmm7, %xmm4
+[2,45]    .    .    .    .    .D==============eeeeE-----------------R .    .    .    .   .   mulps	%xmm9, %xmm4
+[2,46]    .    .    .    .    .DeE----------------------------------R .    .    .    .   .   movaps	%xmm7, %xmm6
+[2,47]    .    .    .    .    .D=====================eE-------------R .    .    .    .   .   shufps	$85, %xmm7, %xmm6
+[2,48]    .    .    .    .    .D=======================eeeeE--------R .    .    .    .   .   mulps	%xmm1, %xmm6
+[2,49]    .    .    .    .    .D===========================eeeE-----R .    .    .    .   .   addps	%xmm4, %xmm6
+[2,50]    .    .    .    .    .DeE----------------------------------R .    .    .    .   .   movaps	%xmm7, %xmm1
+[2,51]    .    .    .    .    .D========================eE----------R .    .    .    .   .   shufps	$170, %xmm7, %xmm1
+[2,52]    .    .    .    .    .D=========================eeeeE------R .    .    .    .   .   mulps	%xmm2, %xmm1
+[2,53]    .    .    .    .    . D=============================eeeE--R .    .    .    .   .   addps	%xmm6, %xmm1
+[2,54]    .    .    .    .    . D=============eE--------------------R .    .    .    .   .   shufps	$255, %xmm7, %xmm7
+[2,55]    .    .    .    .    . D=======================eeeeE-------R .    .    .    .   .   mulps	%xmm7, %xmm3
+[2,56]    .    .    .    .    . D================================eeeER.    .    .    .   .   addps	%xmm1, %xmm3
+[2,57]    .    .    .    .    . D===============================eE---R.    .    .    .   .   movaps	%xmm8, %xmm1
+[2,58]    .    .    .    .    . D==================================eER.    .    .    .   .   movaps	%xmm5, %xmm2
+[2,59]    .    .    .    .    . DeeeeeeeE----------------------------R.    .    .    .   .   retq
+[3,0]     .    .    .    .    .  D=============================eE----R.    .    .    .   .   movaps	%xmm0, %xmm9
+[3,1]     .    .    .    .    .  D================eE-----------------R.    .    .    .   .   movaps	%xmm4, %xmm0
+[3,2]     .    .    .    .    .  D======================eE-----------R.    .    .    .   .   shufps	$0, %xmm4, %xmm0
+[3,3]     .    .    .    .    .  D==============================eeeeER.    .    .    .   .   mulps	%xmm9, %xmm0
+[3,4]     .    .    .    .    .  D================eE-----------------R.    .    .    .   .   movaps	%xmm4, %xmm8
+[3,5]     .    .    .    .    .  D=======================eE----------R.    .    .    .   .   shufps	$85, %xmm4, %xmm8
+[3,6]     .    .    .    .    .  D===============================eeeeER    .    .    .   .   mulps	%xmm1, %xmm8
+[3,7]     .    .    .    .    .  D===================================eeeER .    .    .   .   addps	%xmm0, %xmm8
+[3,8]     .    .    .    .    .  D================eE---------------------R .    .    .   .   movaps	%xmm4, %xmm0
+[3,9]     .    .    .    .    .  D=========================eE------------R .    .    .   .   shufps	$170, %xmm4, %xmm0
+[3,10]    .    .    .    .    .   D=================================eeeeER .    .    .   .   mulps	%xmm2, %xmm0
+[3,11]    .    .    .    .    .   D=====================================eeeER   .    .   .   addps	%xmm8, %xmm0
+[3,12]    .    .    .    .    .   D=========================eE--------------R   .    .   .   shufps	$255, %xmm4, %xmm4
+[3,13]    .    .    .    .    .   D=================================eeeeE---R   .    .   .   mulps	%xmm3, %xmm4
+[3,14]    .    .    .    .    .   D========================================eeeER.    .   .   addps	%xmm4, %xmm0
+[3,15]    .    .    .    .    .   D================================eE----------R.    .   .   movaps	%xmm5, %xmm4
+[3,16]    .    .    .    .    .   D=================================eE---------R.    .   .   shufps	$0, %xmm5, %xmm4
+[3,17]    .    .    .    .    .    D=================================eeeeE-----R.    .   .   mulps	%xmm9, %xmm4
+[3,18]    .    .    .    .    .    D===============================eE----------R.    .   .   movaps	%xmm5, %xmm10
+[3,19]    .    .    .    .    .    D=================================eE--------R.    .   .   shufps	$85, %xmm5, %xmm10
+[3,20]    .    .    .    .    .    D==================================eeeeE----R.    .   .   mulps	%xmm1, %xmm10
+[3,21]    .    .    .    .    .    D======================================eeeE-R.    .   .   addps	%xmm4, %xmm10
+[3,22]    .    .    .    .    .    D===============================eE----------R.    .   .   movaps	%xmm5, %xmm8
+[3,23]    .    .    .    .    .    D==================================eE-------R.    .   .   shufps	$170, %xmm5, %xmm8
+[3,24]    .    .    .    .    .    D===================================eeeeE---R.    .   .   mulps	%xmm2, %xmm8
+[3,25]    .    .    .    .    .    .D========================================eeeER   .   .   addps	%xmm10, %xmm8
+[3,26]    .    .    .    .    .    .D==============================eE------------R   .   .   shufps	$255, %xmm5, %xmm5
+[3,27]    .    .    .    .    .    .D=================================eeeeE------R   .   .   mulps	%xmm3, %xmm5
+[3,28]    .    .    .    .    .    .D===========================================eeeER.   .   addps	%xmm5, %xmm8
+[3,29]    .    .    .    .    .    .D=========================eE--------------------R.   .   movaps	%xmm6, %xmm4
+[3,30]    .    .    .    .    .    .D==========================eE-------------------R.   .   shufps	$0, %xmm6, %xmm4
+[3,31]    .    .    .    .    .    .D===========================eeeeE---------------R.   .   mulps	%xmm9, %xmm4
+[3,32]    .    .    .    .    .    . D========================eE--------------------R.   .   movaps	%xmm6, %xmm10
+[3,33]    .    .    .    .    .    . D=========================eE-------------------R.   .   shufps	$85, %xmm6, %xmm10
+[3,34]    .    .    .    .    .    . D===========================eeeeE--------------R.   .   mulps	%xmm1, %xmm10
+[3,35]    .    .    .    .    .    . D=================================eeeE---------R.   .   addps	%xmm4, %xmm10
+[3,36]    .    .    .    .    .    . D========================eE--------------------R.   .   movaps	%xmm6, %xmm5
+[3,37]    .    .    .    .    .    . D============================eE----------------R.   .   shufps	$170, %xmm6, %xmm5
+[3,38]    .    .    .    .    .    . D=================================eeeeE--------R.   .   mulps	%xmm2, %xmm5
+[3,39]    .    .    .    .    .    . D=====================================eeeE-----R.   .   addps	%xmm10, %xmm5
+[3,40]    .    .    .    .    .    .  D=======================eE--------------------R.   .   shufps	$255, %xmm6, %xmm6
+[3,41]    .    .    .    .    .    .  D=================================eeeeE-------R.   .   mulps	%xmm3, %xmm6
+[3,42]    .    .    .    .    .    .  D=======================================eeeE--R.   .   addps	%xmm6, %xmm5
+[3,43]    .    .    .    .    .    .  D========eE-----------------------------------R.   .   movaps	%xmm7, %xmm4
+[3,44]    .    .    .    .    .    .  D===========================eE----------------R.   .   shufps	$0, %xmm7, %xmm4
+[3,45]    .    .    .    .    .    .  D============================eeeeE------------R.   .   mulps	%xmm9, %xmm4
+[3,46]    .    .    .    .    .    .  D========eE-----------------------------------R.   .   movaps	%xmm7, %xmm6
+[3,47]    .    .    .    .    .    .  D=================================eE----------R.   .   shufps	$85, %xmm7, %xmm6
+[3,48]    .    .    .    .    .    .   D=================================eeeeE------R.   .   mulps	%xmm1, %xmm6
+[3,49]    .    .    .    .    .    .   D=====================================eeeE---R.   .   addps	%xmm4, %xmm6
+[3,50]    .    .    .    .    .    .   D=======eE-----------------------------------R.   .   movaps	%xmm7, %xmm1
+[3,51]    .    .    .    .    .    .   D=================================eE---------R.   .   shufps	$170, %xmm7, %xmm1
+[3,52]    .    .    .    .    .    .   D==================================eeeeE-----R.   .   mulps	%xmm2, %xmm1
+[3,53]    .    .    .    .    .    .   D========================================eeeER.   .   addps	%xmm6, %xmm1
+[3,54]    .    .    .    .    .    .   D===========================eE---------------R.   .   shufps	$255, %xmm7, %xmm7
+[3,55]    .    .    .    .    .    .    D================================eeeeE------R.   .   mulps	%xmm7, %xmm3
+[3,56]    .    .    .    .    .    .    D==========================================eeeER .   addps	%xmm1, %xmm3
+[3,57]    .    .    .    .    .    .    D==========================================eE--R .   movaps	%xmm8, %xmm1
+[3,58]    .    .    .    .    .    .    D========================================eE----R .   movaps	%xmm5, %xmm2
+[3,59]    .    .    .    .    .    .    DeeeeeeeE--------------------------------------R .   retq
+[4,0]     .    .    .    .    .    .    D=====================================eE-------R .   movaps	%xmm0, %xmm9
+[4,1]     .    .    .    .    .    .    D==============================eE--------------R .   movaps	%xmm4, %xmm0
+[4,2]     .    .    .    .    .    .    D=================================eE-----------R .   shufps	$0, %xmm4, %xmm0
+[4,3]     .    .    .    .    .    .    D======================================eeeeE---R .   mulps	%xmm9, %xmm0
+[4,4]     .    .    .    .    .    .    .D=============================eE--------------R .   movaps	%xmm4, %xmm8
+[4,5]     .    .    .    .    .    .    .D==================================eE---------R .   shufps	$85, %xmm4, %xmm8
+[4,6]     .    .    .    .    .    .    .D==========================================eeeeER   mulps	%xmm1, %xmm8
+Truncated display due to cycle limit
+
+
+Average Wait times (based on the timeline view):
+[0]: Executions
+[1]: Average time spent waiting in a scheduler's queue
+[2]: Average time spent waiting in a scheduler's queue while ready
+[3]: Average time elapsed from WB until retire stage
+
+      [0]    [1]    [2]    [3]
+0.     10    31.7   0.1    5.4       movaps	%xmm0, %xmm9
+1.     10    23.9   0.1    13.2      movaps	%xmm4, %xmm0
+2.     10    28.0   3.2    9.1       shufps	$0, %xmm4, %xmm0
+3.     10    32.6   0.0    1.7       mulps	%xmm9, %xmm0
+4.     10    23.3   0.1    13.8      movaps	%xmm4, %xmm8
+5.     10    28.0   3.8    9.0       shufps	$85, %xmm4, %xmm8
+6.     10    34.4   0.0    0.4       mulps	%xmm1, %xmm8
+7.     10    38.2   0.0    0.0       addps	%xmm0, %xmm8
+8.     10    23.0   0.1    17.2      movaps	%xmm4, %xmm0
+9.     10    28.8   5.1    11.1      shufps	$170, %xmm4, %xmm0
+10.    10    34.5   0.0    2.3       mulps	%xmm2, %xmm0
+11.    10    40.7   0.0    0.0       addps	%xmm8, %xmm0
+12.    10    28.3   6.5    13.9      shufps	$255, %xmm4, %xmm4
+13.    10    36.2   0.0    2.9       mulps	%xmm3, %xmm4
+14.    10    42.9   0.0    0.0       addps	%xmm4, %xmm0
+15.    10    32.5   0.1    12.4      movaps	%xmm5, %xmm4
+16.    10    33.4   0.2    11.2      shufps	$0, %xmm5, %xmm4
+17.    10    34.1   0.0    7.2       mulps	%xmm9, %xmm4
+18.    10    32.0   0.1    12.3      movaps	%xmm5, %xmm10
+19.    10    33.4   0.5    10.8      shufps	$85, %xmm5, %xmm10
+20.    10    34.3   0.2    6.4       mulps	%xmm1, %xmm10
+21.    10    38.2   0.0    3.4       addps	%xmm4, %xmm10
+22.    10    31.2   0.1    12.3      movaps	%xmm5, %xmm8
+23.    10    33.6   1.5    9.8       shufps	$170, %xmm5, %xmm8
+24.    10    34.7   0.4    5.4       mulps	%xmm2, %xmm8
+25.    10    40.3   0.0    1.1       addps	%xmm10, %xmm8
+26.    10    30.4   0.3    12.7      shufps	$255, %xmm5, %xmm5
+27.    10    34.0   0.7    5.7       mulps	%xmm3, %xmm5
+28.    10    42.3   0.0    0.0       addps	%xmm5, %xmm8
+29.    10    27.2   0.1    17.0      movaps	%xmm6, %xmm4
+30.    10    28.4   0.4    15.6      shufps	$0, %xmm6, %xmm4
+31.    10    30.2   1.0    10.5      mulps	%xmm9, %xmm4
+32.    10    26.6   0.1    16.9      movaps	%xmm6, %xmm10
+33.    10    29.1   1.8    14.1      shufps	$85, %xmm6, %xmm10
+34.    10    30.9   0.8    9.0       mulps	%xmm1, %xmm10
+35.    10    35.2   0.6    5.4       addps	%xmm4, %xmm10
+36.    10    25.7   0.1    16.9      movaps	%xmm6, %xmm5
+37.    10    29.5   3.1    12.8      shufps	$170, %xmm6, %xmm5
+38.    10    32.7   2.0    6.3       mulps	%xmm2, %xmm5
+39.    10    37.9   0.0    2.1       addps	%xmm10, %xmm5
+40.    10    28.0   3.6    13.6      shufps	$255, %xmm6, %xmm6
+41.    10    32.5   1.8    5.8       mulps	%xmm3, %xmm6
+42.    10    39.9   0.0    0.7       addps	%xmm6, %xmm5
+43.    10    13.7   0.2    28.9      movaps	%xmm7, %xmm4
+44.    10    24.2   9.7    18.2      shufps	$0, %xmm7, %xmm4
+45.    10    25.9   0.5    13.1      mulps	%xmm9, %xmm4
+46.    10    13.2   0.2    28.8      movaps	%xmm7, %xmm6
+47.    10    30.0   15.9   11.9      shufps	$85, %xmm7, %xmm6
+48.    10    32.1   1.5    6.4       mulps	%xmm1, %xmm6
+49.    10    35.8   0.1    3.3       addps	%xmm4, %xmm6
+50.    10    12.3   0.2    28.7      movaps	%xmm7, %xmm1
+51.    10    31.8   18.5   9.2       shufps	$170, %xmm7, %xmm1
+52.    10    32.6   0.0    5.2       mulps	%xmm2, %xmm1
+53.    10    38.0   0.0    0.7       addps	%xmm6, %xmm1
+54.    10    24.6   13.2   16.0      shufps	$255, %xmm7, %xmm7
+55.    10    31.2   3.0    6.1       mulps	%xmm7, %xmm3
+56.    10    40.2   0.0    0.0       addps	%xmm1, %xmm3
+57.    10    38.5   0.0    3.6       movaps	%xmm8, %xmm1
+58.    10    39.7   0.0    2.4       movaps	%xmm5, %xmm2
+59.    10    1.0    1.0    35.0      retq
+       10    31.0   1.7    9.6       <total>

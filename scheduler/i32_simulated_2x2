@@ -1,0 +1,276 @@
+Iterations:        100
+Instructions:      1400
+Total Cycles:      952
+Total uOps:        1400
+
+Dispatch Width:    6
+uOps Per Cycle:    1.47
+IPC:               1.47
+Block RThroughput: 3.0
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      1     0.50                        pshufd	$85, %xmm0, %xmm3
+ 1      1     0.50                        pshuflw	$0, %xmm1, %xmm4
+ 1      5     0.50                        pmullw	%xmm0, %xmm4
+ 1      1     0.50                        pshuflw	$85, %xmm1, %xmm2
+ 1      5     0.50                        pmullw	%xmm3, %xmm2
+ 1      1     0.33                        paddw	%xmm4, %xmm2
+ 1      1     0.50                        pshuflw	$170, %xmm1, %xmm4
+ 1      5     0.50                        pmullw	%xmm0, %xmm4
+ 1      1     0.50                        pshuflw	$255, %xmm1, %xmm0
+ 1      5     0.50                        pmullw	%xmm3, %xmm0
+ 1      1     0.33                        paddw	%xmm4, %xmm0
+ 1      1     0.50                        punpckldq	%xmm0, %xmm2
+ 0      1     0.00                        movdqa	%xmm2, %xmm0
+ 2      7     0.50                  U     retq
+
+
+Dynamic Dispatch Stall Cycles:
+RAT     - Register unavailable:                      0
+RCU     - Retire tokens unavailable:                 0
+SCHEDQ  - Scheduler full:                            778  (81.7%)
+LQ      - Load queue full:                           0
+SQ      - Store queue full:                          0
+GROUP   - Static restrictions on the dispatch group: 0
+USH     - Uncategorised Structural Hazard:           0
+
+
+Dispatch Logic - number of cycles where we saw N micro opcodes dispatched:
+[# dispatched], [# cycles]
+ 0,              375  (39.4%)
+ 1,              201  (21.1%)
+ 2,              130  (13.7%)
+ 3,              123  (12.9%)
+ 4,              84  (8.8%)
+ 6,              39  (4.1%)
+
+
+Schedulers - number of cycles where we saw N micro opcodes issued:
+[# issued], [# cycles]
+ 0,          307  (32.2%)
+ 1,          236  (24.8%)
+ 2,          208  (21.8%)
+ 3,          101  (10.6%)
+ 4,          55  (5.8%)
+ 5,          45  (4.7%)
+
+Scheduler's queue usage:
+[1] Resource name.
+[2] Average number of used buffer entries.
+[3] Maximum number of used buffer entries.
+[4] Total number of buffer entries.
+
+ [1]            [2]        [3]        [4]
+ADLPPort00_01_05_06_10 101  112        112
+ADLPPort02_03_07_08_11 0    1          72
+ADLPPort04_09    0          0          48
+
+
+Retire Control Unit - number of cycles where we saw N instructions retired:
+[# retired], [# cycles]
+ 0,           304  (31.9%)
+ 1,           248  (26.1%)
+ 2,           300  (31.5%)
+ 5,           48  (5.0%)
+ 6,           52  (5.5%)
+
+Total ROB Entries:                512
+Max Used ROB Entries:             203  ( 39.6% )
+Average Used ROB Entries per cy:  182  ( 35.5% )
+
+
+Register File statistics:
+Total number of mappings created:    1300
+Max number of mappings used:         190
+
+
+Resources:
+[0]   - ADLPPort00
+[1]   - ADLPPort01
+[2]   - ADLPPort02
+[3]   - ADLPPort03
+[4]   - ADLPPort04
+[5]   - ADLPPort05
+[6]   - ADLPPort06
+[7]   - ADLPPort07
+[8]   - ADLPPort08
+[9]   - ADLPPort09
+[10]  - ADLPPort10
+[11]  - ADLPPort11
+[12]  - ADLPPortInvalid
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   
+3.38   4.54   0.33   0.33    -     4.10   0.98    -      -      -      -     0.34    -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   Instructions:
+ -     0.47    -      -      -     0.53    -      -      -      -      -      -      -     pshufd	$85, %xmm0, %xmm3
+ -     0.09    -      -      -     0.91    -      -      -      -      -      -      -     pshuflw	$0, %xmm1, %xmm4
+1.00    -      -      -      -      -      -      -      -      -      -      -      -     pmullw	%xmm0, %xmm4
+ -     0.52    -      -      -     0.48    -      -      -      -      -      -      -     pshuflw	$85, %xmm1, %xmm2
+0.94   0.06    -      -      -      -      -      -      -      -      -      -      -     pmullw	%xmm3, %xmm2
+0.86    -      -      -      -     0.14    -      -      -      -      -      -      -     paddw	%xmm4, %xmm2
+ -     0.49    -      -      -     0.51    -      -      -      -      -      -      -     pshuflw	$170, %xmm1, %xmm4
+0.06   0.94    -      -      -      -      -      -      -      -      -      -      -     pmullw	%xmm0, %xmm4
+ -     0.51    -      -      -     0.49    -      -      -      -      -      -      -     pshuflw	$255, %xmm1, %xmm0
+0.42   0.58    -      -      -      -      -      -      -      -      -      -      -     pmullw	%xmm3, %xmm0
+0.08    -      -      -      -     0.92    -      -      -      -      -      -      -     paddw	%xmm4, %xmm0
+ -     0.88    -      -      -     0.12    -      -      -      -      -      -      -     punpckldq	%xmm0, %xmm2
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movdqa	%xmm2, %xmm0
+0.02    -     0.33   0.33    -      -     0.98    -      -      -      -     0.34    -     retq
+
+
+Timeline view:
+                    0123456789          0123456789          0123456789          012345678
+Index     0123456789          0123456789          0123456789          0123456789         
+
+[0,0]     DeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pshufd	$85, %xmm0, %xmm3
+[0,1]     DeER .    .    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$0, %xmm1, %xmm4
+[0,2]     D=eeeeeER .    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[0,3]     D=eE----R .    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$85, %xmm1, %xmm2
+[0,4]     D==eeeeeER.    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm2
+[0,5]     D=======eER    .    .    .    .    .    .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm2
+[0,6]     .DeE------R    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$170, %xmm1, %xmm4
+[0,7]     .D=eeeeeE-R    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[0,8]     .D=eE-----R    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$255, %xmm1, %xmm0
+[0,9]     .D==eeeeeER    .    .    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm0
+[0,10]    .D=======eER   .    .    .    .    .    .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm0
+[0,11]    .D========eER  .    .    .    .    .    .    .    .    .    .    .    .    .  .   punpckldq	%xmm0, %xmm2
+[0,12]    . D========eER .    .    .    .    .    .    .    .    .    .    .    .    .  .   movdqa	%xmm2, %xmm0
+[0,13]    . DeeeeeeeE--R .    .    .    .    .    .    .    .    .    .    .    .    .  .   retq
+[1,0]     . D=========eER.    .    .    .    .    .    .    .    .    .    .    .    .  .   pshufd	$85, %xmm0, %xmm3
+[1,1]     . D=eE--------R.    .    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$0, %xmm1, %xmm4
+[1,2]     . D=========eeeeeER .    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[1,3]     . D=eE------------R .    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$85, %xmm1, %xmm2
+[1,4]     .  D=========eeeeeER.    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm2
+[1,5]     .  D==============eER    .    .    .    .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm2
+[1,6]     .  D=eE-------------R    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$170, %xmm1, %xmm4
+[1,7]     .  D========eeeeeE--R    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[1,8]     .  D=eE-------------R    .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$255, %xmm1, %xmm0
+[1,9]     .  D=========eeeeeE-R    .    .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm0
+[1,10]    .   D=============eER    .    .    .    .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm0
+[1,11]    .   D==============eER   .    .    .    .    .    .    .    .    .    .    .  .   punpckldq	%xmm0, %xmm2
+[1,12]    .   D===============eER  .    .    .    .    .    .    .    .    .    .    .  .   movdqa	%xmm2, %xmm0
+[1,13]    .   DeeeeeeeE---------R  .    .    .    .    .    .    .    .    .    .    .  .   retq
+[2,0]     .   D================eER .    .    .    .    .    .    .    .    .    .    .  .   pshufd	$85, %xmm0, %xmm3
+[2,1]     .   D=eE---------------R .    .    .    .    .    .    .    .    .    .    .  .   pshuflw	$0, %xmm1, %xmm4
+[2,2]     .    D===============eeeeeER  .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[2,3]     .    DeE-------------------R  .    .    .    .    .    .    .    .    .    .  .   pshuflw	$85, %xmm1, %xmm2
+[2,4]     .    D================eeeeeER .    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm2
+[2,5]     .    D=====================eER.    .    .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm2
+[2,6]     .    D=eE--------------------R.    .    .    .    .    .    .    .    .    .  .   pshuflw	$170, %xmm1, %xmm4
+[2,7]     .    D===============eeeeeE--R.    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[2,8]     .    .DeE--------------------R.    .    .    .    .    .    .    .    .    .  .   pshuflw	$255, %xmm1, %xmm0
+[2,9]     .    .D===============eeeeeE-R.    .    .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm0
+[2,10]    .    .D====================eER.    .    .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm0
+[2,11]    .    .D=====================eER    .    .    .    .    .    .    .    .    .  .   punpckldq	%xmm0, %xmm2
+[2,12]    .    .D======================eER   .    .    .    .    .    .    .    .    .  .   movdqa	%xmm2, %xmm0
+[2,13]    .    .DeeeeeeeE----------------R   .    .    .    .    .    .    .    .    .  .   retq
+[3,0]     .    . D======================eER  .    .    .    .    .    .    .    .    .  .   pshufd	$85, %xmm0, %xmm3
+[3,1]     .    . DeE----------------------R  .    .    .    .    .    .    .    .    .  .   pshuflw	$0, %xmm1, %xmm4
+[3,2]     .    . D======================eeeeeER   .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[3,3]     .    . DeE--------------------------R   .    .    .    .    .    .    .    .  .   pshuflw	$85, %xmm1, %xmm2
+[3,4]     .    . D=======================eeeeeER  .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm2
+[3,5]     .    . D============================eER .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm2
+[3,6]     .    .  DeE---------------------------R .    .    .    .    .    .    .    .  .   pshuflw	$170, %xmm1, %xmm4
+[3,7]     .    .  D=====================eeeeeE--R .    .    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[3,8]     .    .  DeE---------------------------R .    .    .    .    .    .    .    .  .   pshuflw	$255, %xmm1, %xmm0
+[3,9]     .    .  D======================eeeeeE-R .    .    .    .    .    .    .    .  .   pmullw	%xmm3, %xmm0
+[3,10]    .    .  D===========================eER .    .    .    .    .    .    .    .  .   paddw	%xmm4, %xmm0
+[3,11]    .    .  D============================eER.    .    .    .    .    .    .    .  .   punpckldq	%xmm0, %xmm2
+[3,12]    .    .   D============================eER    .    .    .    .    .    .    .  .   movdqa	%xmm2, %xmm0
+[3,13]    .    .   DeeeeeeeE----------------------R    .    .    .    .    .    .    .  .   retq
+[4,0]     .    .   D=============================eER   .    .    .    .    .    .    .  .   pshufd	$85, %xmm0, %xmm3
+[4,1]     .    .   DeE-----------------------------R   .    .    .    .    .    .    .  .   pshuflw	$0, %xmm1, %xmm4
+[4,2]     .    .   D=============================eeeeeER    .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[4,3]     .    .   D=eE--------------------------------R    .    .    .    .    .    .  .   pshuflw	$85, %xmm1, %xmm2
+[4,4]     .    .    D=============================eeeeeER   .    .    .    .    .    .  .   pmullw	%xmm3, %xmm2
+[4,5]     .    .    D==================================eER  .    .    .    .    .    .  .   paddw	%xmm4, %xmm2
+[4,6]     .    .    DeE----------------------------------R  .    .    .    .    .    .  .   pshuflw	$170, %xmm1, %xmm4
+[4,7]     .    .    D============================eeeeeE--R  .    .    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[4,8]     .    .    D==eE--------------------------------R  .    .    .    .    .    .  .   pshuflw	$255, %xmm1, %xmm0
+[4,9]     .    .    D=============================eeeeeE-R  .    .    .    .    .    .  .   pmullw	%xmm3, %xmm0
+[4,10]    .    .    .D=================================eER  .    .    .    .    .    .  .   paddw	%xmm4, %xmm0
+[4,11]    .    .    .D==================================eER .    .    .    .    .    .  .   punpckldq	%xmm0, %xmm2
+[4,12]    .    .    .D===================================eER.    .    .    .    .    .  .   movdqa	%xmm2, %xmm0
+[4,13]    .    .    .DeeeeeeeE-----------------------------R.    .    .    .    .    .  .   retq
+[5,0]     .    .    .D====================================eER    .    .    .    .    .  .   pshufd	$85, %xmm0, %xmm3
+[5,1]     .    .    .D==eE----------------------------------R    .    .    .    .    .  .   pshuflw	$0, %xmm1, %xmm4
+[5,2]     .    .    . D===================================eeeeeER.    .    .    .    .  .   pmullw	%xmm0, %xmm4
+[5,3]     .    .    . D=eE--------------------------------------R.    .    .    .    .  .   pshuflw	$85, %xmm1, %xmm2
+[5,4]     .    .    . D====================================eeeeeER    .    .    .    .  .   pmullw	%xmm3, %xmm2
+[5,5]     .    .    . D=========================================eER   .    .    .    .  .   paddw	%xmm4, %xmm2
+[5,6]     .    .    . D==eE---------------------------------------R   .    .    .    .  .   pshuflw	$170, %xmm1, %xmm4
+[5,7]     .    .    . D===================================eeeeeE--R   .    .    .    .  .   pmullw	%xmm0, %xmm4
+[5,8]     .    .    .  D=eE---------------------------------------R   .    .    .    .  .   pshuflw	$255, %xmm1, %xmm0
+[5,9]     .    .    .  D===================================eeeeeE-R   .    .    .    .  .   pmullw	%xmm3, %xmm0
+[5,10]    .    .    .  D========================================eER   .    .    .    .  .   paddw	%xmm4, %xmm0
+[5,11]    .    .    .  D=========================================eER  .    .    .    .  .   punpckldq	%xmm0, %xmm2
+[5,12]    .    .    .  D==========================================eER .    .    .    .  .   movdqa	%xmm2, %xmm0
+[5,13]    .    .    .  DeeeeeeeE------------------------------------R .    .    .    .  .   retq
+[6,0]     .    .    .   D==========================================eER.    .    .    .  .   pshufd	$85, %xmm0, %xmm3
+[6,1]     .    .    .   D=eE-----------------------------------------R.    .    .    .  .   pshuflw	$0, %xmm1, %xmm4
+[6,2]     .    .    .   D==========================================eeeeeER .    .    .  .   pmullw	%xmm0, %xmm4
+[6,3]     .    .    .   D=eE---------------------------------------------R .    .    .  .   pshuflw	$85, %xmm1, %xmm2
+[6,4]     .    .    .   D===========================================eeeeeER.    .    .  .   pmullw	%xmm3, %xmm2
+[6,5]     .    .    .   D================================================eER    .    .  .   paddw	%xmm4, %xmm2
+[6,6]     .    .    .    D=eE----------------------------------------------R    .    .  .   pshuflw	$170, %xmm1, %xmm4
+[6,7]     .    .    .    D==========================================eeeeeE-R    .    .  .   pmullw	%xmm0, %xmm4
+[6,8]     .    .    .    D=eE----------------------------------------------R    .    .  .   pshuflw	$255, %xmm1, %xmm0
+[6,9]     .    .    .    D===========================================eeeeeER    .    .  .   pmullw	%xmm3, %xmm0
+[6,10]    .    .    .    D================================================eER   .    .  .   paddw	%xmm4, %xmm0
+[6,11]    .    .    .    D=================================================eER  .    .  .   punpckldq	%xmm0, %xmm2
+[6,12]    .    .    .    .D=================================================eER .    .  .   movdqa	%xmm2, %xmm0
+[6,13]    .    .    .    .DeeeeeeeE-------------------------------------------R .    .  .   retq
+[7,0]     .    .    .    .D==================================================eER.    .  .   pshufd	$85, %xmm0, %xmm3
+[7,1]     .    .    .    .D=eE-------------------------------------------------R.    .  .   pshuflw	$0, %xmm1, %xmm4
+[7,2]     .    .    .    .D==================================================eeeeeER .  .   pmullw	%xmm0, %xmm4
+[7,3]     .    .    .    .D==eE----------------------------------------------------R .  .   pshuflw	$85, %xmm1, %xmm2
+[7,4]     .    .    .    . D==================================================eeeeeER.  .   pmullw	%xmm3, %xmm2
+[7,5]     .    .    .    . D=======================================================eER  .   paddw	%xmm4, %xmm2
+[7,6]     .    .    .    . D==eE-----------------------------------------------------R  .   pshuflw	$170, %xmm1, %xmm4
+[7,7]     .    .    .    . D=================================================eeeeeE--R  .   pmullw	%xmm0, %xmm4
+[7,8]     .    .    .    . D==eE-----------------------------------------------------R  .   pshuflw	$255, %xmm1, %xmm0
+[7,9]     .    .    .    . D==================================================eeeeeE-R  .   pmullw	%xmm3, %xmm0
+[7,10]    .    .    .    .  D======================================================eER  .   paddw	%xmm4, %xmm0
+[7,11]    .    .    .    .  D=======================================================eER .   punpckldq	%xmm0, %xmm2
+[7,12]    .    .    .    .  D========================================================eER.   movdqa	%xmm2, %xmm0
+[7,13]    .    .    .    .  DeeeeeeeE--------------------------------------------------R.   retq
+[8,0]     .    .    .    .  D=========================================================eER   pshufd	$85, %xmm0, %xmm3
+[8,1]     .    .    .    .  D===eE------------------------------------------------------R   pshuflw	$0, %xmm1, %xmm4
+Truncated display due to cycle limit
+
+
+Average Wait times (based on the timeline view):
+[0]: Executions
+[1]: Average time spent waiting in a scheduler's queue
+[2]: Average time spent waiting in a scheduler's queue while ready
+[3]: Average time elapsed from WB until retire stage
+
+      [0]    [1]    [2]    [3]
+0.     10    33.5   0.1    0.0       pshufd	$85, %xmm0, %xmm3
+1.     10    2.1    2.1    31.4      pshuflw	$0, %xmm1, %xmm4
+2.     10    33.3   0.0    0.0       pmullw	%xmm0, %xmm4
+3.     10    2.3    2.3    35.0      pshuflw	$85, %xmm1, %xmm2
+4.     10    34.0   0.0    0.0       pmullw	%xmm3, %xmm2
+5.     10    39.0   0.0    0.0       paddw	%xmm4, %xmm2
+6.     10    2.2    2.2    36.4      pshuflw	$170, %xmm1, %xmm4
+7.     10    32.9   0.2    1.7       pmullw	%xmm0, %xmm4
+8.     10    2.4    2.4    35.9      pshuflw	$255, %xmm1, %xmm0
+9.     10    33.6   0.2    0.7       pmullw	%xmm3, %xmm0
+10.    10    38.3   0.0    0.0       paddw	%xmm4, %xmm0
+11.    10    39.3   0.0    0.0       punpckldq	%xmm0, %xmm2
+12.    10    39.9   0.0    0.0       movdqa	%xmm2, %xmm0
+13.    10    1.0    1.0    32.9      retq
+       10    23.8   0.8    12.4      <total>

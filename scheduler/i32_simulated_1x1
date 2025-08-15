@@ -1,0 +1,155 @@
+Iterations:        100
+Instructions:      300
+Total Cycles:      105
+Total uOps:        400
+
+Dispatch Width:    6
+uOps Per Cycle:    3.81
+IPC:               2.86
+Block RThroughput: 1.0
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      0     0.20                        movl	%edi, %eax
+ 1      3     1.00                        imull	%esi, %eax
+ 2      7     0.50                  U     retq
+
+
+Dynamic Dispatch Stall Cycles:
+RAT     - Register unavailable:                      0
+RCU     - Retire tokens unavailable:                 0
+SCHEDQ  - Scheduler full:                            0
+LQ      - Load queue full:                           0
+SQ      - Store queue full:                          0
+GROUP   - Static restrictions on the dispatch group: 0
+USH     - Uncategorised Structural Hazard:           0
+
+
+Dispatch Logic - number of cycles where we saw N micro opcodes dispatched:
+[# dispatched], [# cycles]
+ 0,              38  (36.2%)
+ 4,              1  (1.0%)
+ 6,              66  (62.9%)
+
+
+Schedulers - number of cycles where we saw N micro opcodes issued:
+[# issued], [# cycles]
+ 0,          5  (4.8%)
+ 1,          33  (31.4%)
+ 4,          1  (1.0%)
+ 5,          33  (31.4%)
+ 6,          33  (31.4%)
+
+Scheduler's queue usage:
+[1] Resource name.
+[2] Average number of used buffer entries.
+[3] Maximum number of used buffer entries.
+[4] Total number of buffer entries.
+
+ [1]            [2]        [3]        [4]
+ADLPPort00_01_05_06_10 18   37         112
+ADLPPort02_03_07_08_11 1    2          72
+ADLPPort04_09    0          0          48
+
+
+Retire Control Unit - number of cycles where we saw N instructions retired:
+[# retired], [# cycles]
+ 0,           7  (6.7%)
+ 1,           2  (1.9%)
+ 2,           1  (1.0%)
+ 3,           91  (86.7%)
+ 5,           1  (1.0%)
+ 6,           3  (2.9%)
+
+Total ROB Entries:                512
+Max Used ROB Entries:             151  ( 29.5% )
+Average Used ROB Entries per cy:  82  ( 16.0% )
+
+
+Register File statistics:
+Total number of mappings created:    300
+Max number of mappings used:         113
+
+
+Resources:
+[0]   - ADLPPort00
+[1]   - ADLPPort01
+[2]   - ADLPPort02
+[3]   - ADLPPort03
+[4]   - ADLPPort04
+[5]   - ADLPPort05
+[6]   - ADLPPort06
+[7]   - ADLPPort07
+[8]   - ADLPPort08
+[9]   - ADLPPort09
+[10]  - ADLPPort10
+[11]  - ADLPPort11
+[12]  - ADLPPortInvalid
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   
+0.50   1.00   0.33   0.33    -     0.50   0.50    -      -      -     0.50   0.34    -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   Instructions:
+ -      -      -      -      -     0.50    -      -      -      -     0.50    -      -     movl	%edi, %eax
+ -     1.00    -      -      -      -      -      -      -      -      -      -      -     imull	%esi, %eax
+0.50    -     0.33   0.33    -      -     0.50    -      -      -      -     0.34    -     retq
+
+
+Timeline view:
+                    012345
+Index     0123456789      
+
+[0,0]     DER  .    .    .   movl	%edi, %eax
+[0,1]     DeeeER    .    .   imull	%esi, %eax
+[0,2]     DeeeeeeeER.    .   retq
+[1,0]     DE-------R.    .   movl	%edi, %eax
+[1,1]     D=eeeE---R.    .   imull	%esi, %eax
+[1,2]     .DeeeeeeeER    .   retq
+[2,0]     .DE-------R    .   movl	%edi, %eax
+[2,1]     .D=eeeE---R    .   imull	%esi, %eax
+[2,2]     .DeeeeeeeER    .   retq
+[3,0]     . DE------R    .   movl	%edi, %eax
+[3,1]     . D=eeeE--R    .   imull	%esi, %eax
+[3,2]     . DeeeeeeeER   .   retq
+[4,0]     . DE-------R   .   movl	%edi, %eax
+[4,1]     . D==eeeE--R   .   imull	%esi, %eax
+[4,2]     .  DeeeeeeeER  .   retq
+[5,0]     .  DE-------R  .   movl	%edi, %eax
+[5,1]     .  D==eeeE--R  .   imull	%esi, %eax
+[5,2]     .  DeeeeeeeER  .   retq
+[6,0]     .   DE------R  .   movl	%edi, %eax
+[6,1]     .   D==eeeE-R  .   imull	%esi, %eax
+[6,2]     .   DeeeeeeeER .   retq
+[7,0]     .   DE-------R .   movl	%edi, %eax
+[7,1]     .   D===eeeE-R .   imull	%esi, %eax
+[7,2]     .    DeeeeeeeER.   retq
+[8,0]     .    DE-------R.   movl	%edi, %eax
+[8,1]     .    D===eeeE-R.   imull	%esi, %eax
+[8,2]     .    DeeeeeeeER.   retq
+[9,0]     .    .DE------R.   movl	%edi, %eax
+[9,1]     .    .D===eeeER.   imull	%esi, %eax
+[9,2]     .    .DeeeeeeeER   retq
+
+
+Average Wait times (based on the timeline view):
+[0]: Executions
+[1]: Average time spent waiting in a scheduler's queue
+[2]: Average time spent waiting in a scheduler's queue while ready
+[3]: Average time elapsed from WB until retire stage
+
+      [0]    [1]    [2]    [3]
+0.     10    1.0    1.0    6.0       movl	%edi, %eax
+1.     10    2.8    1.8    1.5       imull	%esi, %eax
+2.     10    1.0    1.0    0.0       retq
+       10    1.6    1.3    2.5       <total>

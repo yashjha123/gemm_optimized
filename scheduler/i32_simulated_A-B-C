@@ -1,0 +1,189 @@
+Iterations:        100
+Instructions:      600
+Total Cycles:      806
+Total uOps:        600
+
+Dispatch Width:    6
+uOps Per Cycle:    0.74
+IPC:               0.74
+Block RThroughput: 1.0
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      5     0.50                        pmullw	%xmm1, %xmm0
+ 0      1     0.00                        movdqa	%xmm0, %xmm1
+ 1      1     0.50                        psrld	$16, %xmm1
+ 1      1     0.33                        paddw	%xmm0, %xmm1
+ 1      3     1.00                        movd	%xmm1, %eax
+ 2      7     0.50                  U     retq
+
+
+Dynamic Dispatch Stall Cycles:
+RAT     - Register unavailable:                      0
+RCU     - Retire tokens unavailable:                 0
+SCHEDQ  - Scheduler full:                            547  (67.9%)
+LQ      - Load queue full:                           0
+SQ      - Store queue full:                          0
+GROUP   - Static restrictions on the dispatch group: 0
+USH     - Uncategorised Structural Hazard:           0
+
+
+Dispatch Logic - number of cycles where we saw N micro opcodes dispatched:
+[# dispatched], [# cycles]
+ 0,              466  (57.8%)
+ 1,              239  (29.7%)
+ 2,              35  (4.3%)
+ 3,              35  (4.3%)
+ 6,              31  (3.8%)
+
+
+Schedulers - number of cycles where we saw N micro opcodes issued:
+[# issued], [# cycles]
+ 0,          369  (45.8%)
+ 1,          288  (35.7%)
+ 2,          138  (17.1%)
+ 3,          8  (1.0%)
+ 4,          3  (0.4%)
+
+Scheduler's queue usage:
+[1] Resource name.
+[2] Average number of used buffer entries.
+[3] Maximum number of used buffer entries.
+[4] Total number of buffer entries.
+
+ [1]            [2]        [3]        [4]
+ADLPPort00_01_05_06_10 93   112        112
+ADLPPort02_03_07_08_11 0    1          72
+ADLPPort04_09    0          0          48
+
+
+Retire Control Unit - number of cycles where we saw N instructions retired:
+[# retired], [# cycles]
+ 0,           306  (38.0%)
+ 1,           400  (49.6%)
+ 2,           100  (12.4%)
+
+Total ROB Entries:                512
+Max Used ROB Entries:             172  ( 33.6% )
+Average Used ROB Entries per cy:  143  ( 27.9% )
+
+
+Register File statistics:
+Total number of mappings created:    500
+Max number of mappings used:         143
+
+
+Resources:
+[0]   - ADLPPort00
+[1]   - ADLPPort01
+[2]   - ADLPPort02
+[3]   - ADLPPort03
+[4]   - ADLPPort04
+[5]   - ADLPPort05
+[6]   - ADLPPort06
+[7]   - ADLPPort07
+[8]   - ADLPPort08
+[9]   - ADLPPort09
+[10]  - ADLPPort10
+[11]  - ADLPPort11
+[12]  - ADLPPortInvalid
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   
+1.61   1.53   0.33   0.33    -     1.00   0.86    -      -      -      -     0.34    -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   Instructions:
+0.47   0.53    -      -      -      -      -      -      -      -      -      -      -     pmullw	%xmm1, %xmm0
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movdqa	%xmm0, %xmm1
+ -     1.00    -      -      -      -      -      -      -      -      -      -      -     psrld	$16, %xmm1
+ -      -      -      -      -     1.00    -      -      -      -      -      -      -     paddw	%xmm0, %xmm1
+1.00    -      -      -      -      -      -      -      -      -      -      -      -     movd	%xmm1, %eax
+0.14    -     0.33   0.33    -      -     0.86    -      -      -      -     0.34    -     retq
+
+
+Timeline view:
+                    0123456789          0123456789          0123456789          0123456789
+Index     0123456789          0123456789          0123456789          0123456789          
+
+[0,0]     DeeeeeER  .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   pmullw	%xmm1, %xmm0
+[0,1]     D=====eER .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   movdqa	%xmm0, %xmm1
+[0,2]     D======eER.    .    .    .    .    .    .    .    .    .    .    .    .    .   .   psrld	$16, %xmm1
+[0,3]     D=======eER    .    .    .    .    .    .    .    .    .    .    .    .    .   .   paddw	%xmm0, %xmm1
+[0,4]     D========eeeER .    .    .    .    .    .    .    .    .    .    .    .    .   .   movd	%xmm1, %eax
+[0,5]     DeeeeeeeE----R .    .    .    .    .    .    .    .    .    .    .    .    .   .   retq
+[1,0]     .D=======eeeeeER    .    .    .    .    .    .    .    .    .    .    .    .   .   pmullw	%xmm1, %xmm0
+[1,1]     .D============eER   .    .    .    .    .    .    .    .    .    .    .    .   .   movdqa	%xmm0, %xmm1
+[1,2]     .D=============eER  .    .    .    .    .    .    .    .    .    .    .    .   .   psrld	$16, %xmm1
+[1,3]     .D==============eER .    .    .    .    .    .    .    .    .    .    .    .   .   paddw	%xmm0, %xmm1
+[1,4]     .D===============eeeER   .    .    .    .    .    .    .    .    .    .    .   .   movd	%xmm1, %eax
+[1,5]     .DeeeeeeeE-----------R   .    .    .    .    .    .    .    .    .    .    .   .   retq
+[2,0]     . D==============eeeeeER .    .    .    .    .    .    .    .    .    .    .   .   pmullw	%xmm1, %xmm0
+[2,1]     . D===================eER.    .    .    .    .    .    .    .    .    .    .   .   movdqa	%xmm0, %xmm1
+[2,2]     . D====================eER    .    .    .    .    .    .    .    .    .    .   .   psrld	$16, %xmm1
+[2,3]     . D=====================eER   .    .    .    .    .    .    .    .    .    .   .   paddw	%xmm0, %xmm1
+[2,4]     . D======================eeeER.    .    .    .    .    .    .    .    .    .   .   movd	%xmm1, %eax
+[2,5]     . DeeeeeeeE------------------R.    .    .    .    .    .    .    .    .    .   .   retq
+[3,0]     .  D=====================eeeeeER   .    .    .    .    .    .    .    .    .   .   pmullw	%xmm1, %xmm0
+[3,1]     .  D==========================eER  .    .    .    .    .    .    .    .    .   .   movdqa	%xmm0, %xmm1
+[3,2]     .  D===========================eER .    .    .    .    .    .    .    .    .   .   psrld	$16, %xmm1
+[3,3]     .  D============================eER.    .    .    .    .    .    .    .    .   .   paddw	%xmm0, %xmm1
+[3,4]     .  D=============================eeeER  .    .    .    .    .    .    .    .   .   movd	%xmm1, %eax
+[3,5]     .  DeeeeeeeE-------------------------R  .    .    .    .    .    .    .    .   .   retq
+[4,0]     .   D============================eeeeeER.    .    .    .    .    .    .    .   .   pmullw	%xmm1, %xmm0
+[4,1]     .   D=================================eER    .    .    .    .    .    .    .   .   movdqa	%xmm0, %xmm1
+[4,2]     .   D==================================eER   .    .    .    .    .    .    .   .   psrld	$16, %xmm1
+[4,3]     .   D===================================eER  .    .    .    .    .    .    .   .   paddw	%xmm0, %xmm1
+[4,4]     .   D====================================eeeER    .    .    .    .    .    .   .   movd	%xmm1, %eax
+[4,5]     .   DeeeeeeeE--------------------------------R    .    .    .    .    .    .   .   retq
+[5,0]     .    D===================================eeeeeER  .    .    .    .    .    .   .   pmullw	%xmm1, %xmm0
+[5,1]     .    D========================================eER .    .    .    .    .    .   .   movdqa	%xmm0, %xmm1
+[5,2]     .    D=========================================eER.    .    .    .    .    .   .   psrld	$16, %xmm1
+[5,3]     .    D==========================================eER    .    .    .    .    .   .   paddw	%xmm0, %xmm1
+[5,4]     .    D============================================eeeER.    .    .    .    .   .   movd	%xmm1, %eax
+[5,5]     .    DeeeeeeeE----------------------------------------R.    .    .    .    .   .   retq
+[6,0]     .    .D==========================================eeeeeER    .    .    .    .   .   pmullw	%xmm1, %xmm0
+[6,1]     .    .D===============================================eER   .    .    .    .   .   movdqa	%xmm0, %xmm1
+[6,2]     .    .D================================================eER  .    .    .    .   .   psrld	$16, %xmm1
+[6,3]     .    .D=================================================eER .    .    .    .   .   paddw	%xmm0, %xmm1
+[6,4]     .    .D==================================================eeeER   .    .    .   .   movd	%xmm1, %eax
+[6,5]     .    .DeeeeeeeE----------------------------------------------R   .    .    .   .   retq
+[7,0]     .    . D=================================================eeeeeER .    .    .   .   pmullw	%xmm1, %xmm0
+[7,1]     .    . D======================================================eER.    .    .   .   movdqa	%xmm0, %xmm1
+[7,2]     .    . D=======================================================eER    .    .   .   psrld	$16, %xmm1
+[7,3]     .    . D========================================================eER   .    .   .   paddw	%xmm0, %xmm1
+[7,4]     .    . D==========================================================eeeER    .   .   movd	%xmm1, %eax
+[7,5]     .    . DeeeeeeeE------------------------------------------------------R    .   .   retq
+[8,0]     .    .  D========================================================eeeeeER   .   .   pmullw	%xmm1, %xmm0
+[8,1]     .    .  D=============================================================eER  .   .   movdqa	%xmm0, %xmm1
+[8,2]     .    .  D==============================================================eER .   .   psrld	$16, %xmm1
+[8,3]     .    .  D===============================================================eER.   .   paddw	%xmm0, %xmm1
+[8,4]     .    .  D================================================================eeeER .   movd	%xmm1, %eax
+[8,5]     .    .  DeeeeeeeE------------------------------------------------------------R .   retq
+[9,0]     .    .   D===============================================================eeeeeER   pmullw	%xmm1, %xmm0
+Truncated display due to cycle limit
+
+
+Average Wait times (based on the timeline view):
+[0]: Executions
+[1]: Average time spent waiting in a scheduler's queue
+[2]: Average time spent waiting in a scheduler's queue while ready
+[3]: Average time elapsed from WB until retire stage
+
+      [0]    [1]    [2]    [3]
+0.     10    32.5   0.1    0.0       pmullw	%xmm1, %xmm0
+1.     10    37.5   0.0    0.0       movdqa	%xmm0, %xmm1
+2.     10    38.5   0.0    0.0       psrld	$16, %xmm1
+3.     10    39.5   0.0    0.0       paddw	%xmm0, %xmm1
+4.     10    40.8   0.3    0.0       movd	%xmm1, %eax
+5.     10    1.0    1.0    35.8      retq
+       10    31.6   0.2    6.0       <total>

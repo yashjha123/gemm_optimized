@@ -1,0 +1,173 @@
+Iterations:        100
+Instructions:      500
+Total Cycles:      903
+Total uOps:        500
+
+Dispatch Width:    6
+uOps Per Cycle:    0.55
+IPC:               0.55
+Block RThroughput: 1.0
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 1      4     0.50                        mulps	%xmm1, %xmm0
+ 0      1     0.00                        movaps	%xmm0, %xmm1
+ 1      1     0.50                        shufps	$85, %xmm0, %xmm1
+ 1      3     0.50                        addss	%xmm1, %xmm0
+ 2      7     0.50                  U     retq
+
+
+Dynamic Dispatch Stall Cycles:
+RAT     - Register unavailable:                      0
+RCU     - Retire tokens unavailable:                 0
+SCHEDQ  - Scheduler full:                            525  (58.1%)
+LQ      - Load queue full:                           0
+SQ      - Store queue full:                          0
+GROUP   - Static restrictions on the dispatch group: 0
+USH     - Uncategorised Structural Hazard:           0
+
+
+Dispatch Logic - number of cycles where we saw N micro opcodes dispatched:
+[# dispatched], [# cycles]
+ 0,              627  (69.4%)
+ 1,              176  (19.5%)
+ 2,              59  (6.5%)
+ 3,              1  (0.1%)
+ 5,              37  (4.1%)
+ 6,              3  (0.3%)
+
+
+Schedulers - number of cycles where we saw N micro opcodes issued:
+[# issued], [# cycles]
+ 0,          516  (57.1%)
+ 1,          287  (31.8%)
+ 2,          87  (9.6%)
+ 3,          13  (1.4%)
+
+Scheduler's queue usage:
+[1] Resource name.
+[2] Average number of used buffer entries.
+[3] Maximum number of used buffer entries.
+[4] Total number of buffer entries.
+
+ [1]            [2]        [3]        [4]
+ADLPPort00_01_05_06_10 88   112        112
+ADLPPort02_03_07_08_11 0    1          72
+ADLPPort04_09    0          0          48
+
+
+Retire Control Unit - number of cycles where we saw N instructions retired:
+[# retired], [# cycles]
+ 0,           503  (55.7%)
+ 1,           300  (33.2%)
+ 2,           100  (11.1%)
+
+Total ROB Entries:                512
+Max Used ROB Entries:             190  ( 37.1% )
+Average Used ROB Entries per cy:  149  ( 29.1% )
+
+
+Register File statistics:
+Total number of mappings created:    400
+Max number of mappings used:         152
+
+
+Resources:
+[0]   - ADLPPort00
+[1]   - ADLPPort01
+[2]   - ADLPPort02
+[3]   - ADLPPort03
+[4]   - ADLPPort04
+[5]   - ADLPPort05
+[6]   - ADLPPort06
+[7]   - ADLPPort07
+[8]   - ADLPPort08
+[9]   - ADLPPort09
+[10]  - ADLPPort10
+[11]  - ADLPPort11
+[12]  - ADLPPortInvalid
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   
+1.15   1.03   0.33   0.33    -     1.03   0.79    -      -      -      -     0.34    -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   [12]   Instructions:
+0.94   0.06    -      -      -      -      -      -      -      -      -      -      -     mulps	%xmm1, %xmm0
+ -      -      -      -      -      -      -      -      -      -      -      -      -     movaps	%xmm0, %xmm1
+ -      -      -      -      -     1.00    -      -      -      -      -      -      -     shufps	$85, %xmm0, %xmm1
+ -     0.97    -      -      -     0.03    -      -      -      -      -      -      -     addss	%xmm1, %xmm0
+0.21    -     0.33   0.33    -      -     0.79    -      -      -      -     0.34    -     retq
+
+
+Timeline view:
+                    0123456789          0123456789          0123456789          0123456789
+Index     0123456789          0123456789          0123456789          0123456789          
+
+[0,0]     DeeeeER   .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm0
+[0,1]     D====eER  .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm0, %xmm1
+[0,2]     D=====eER .    .    .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm0, %xmm1
+[0,3]     D======eeeER   .    .    .    .    .    .    .    .    .    .    .    .    .   .   addss	%xmm1, %xmm0
+[0,4]     DeeeeeeeE--R   .    .    .    .    .    .    .    .    .    .    .    .    .   .   retq
+[1,0]     D=========eeeeER    .    .    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm0
+[1,1]     .D============eER   .    .    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm0, %xmm1
+[1,2]     .D=============eER  .    .    .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm0, %xmm1
+[1,3]     .D==============eeeER    .    .    .    .    .    .    .    .    .    .    .   .   addss	%xmm1, %xmm0
+[1,4]     .DeeeeeeeE----------R    .    .    .    .    .    .    .    .    .    .    .   .   retq
+[2,0]     .D=================eeeeER.    .    .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm0
+[2,1]     .D=====================eER    .    .    .    .    .    .    .    .    .    .   .   movaps	%xmm0, %xmm1
+[2,2]     .D======================eER   .    .    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm0, %xmm1
+[2,3]     . D======================eeeER.    .    .    .    .    .    .    .    .    .   .   addss	%xmm1, %xmm0
+[2,4]     . DeeeeeeeE------------------R.    .    .    .    .    .    .    .    .    .   .   retq
+[3,0]     . D=========================eeeeER .    .    .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm0
+[3,1]     . D=============================eER.    .    .    .    .    .    .    .    .   .   movaps	%xmm0, %xmm1
+[3,2]     . D==============================eER    .    .    .    .    .    .    .    .   .   shufps	$85, %xmm0, %xmm1
+[3,3]     . D===============================eeeER .    .    .    .    .    .    .    .   .   addss	%xmm1, %xmm0
+[3,4]     .  DeeeeeeeE--------------------------R .    .    .    .    .    .    .    .   .   retq
+[4,0]     .  D=================================eeeeER  .    .    .    .    .    .    .   .   mulps	%xmm1, %xmm0
+[4,1]     .  D=====================================eER .    .    .    .    .    .    .   .   movaps	%xmm0, %xmm1
+[4,2]     .  D======================================eER.    .    .    .    .    .    .   .   shufps	$85, %xmm0, %xmm1
+[4,3]     .  D=======================================eeeER  .    .    .    .    .    .   .   addss	%xmm1, %xmm0
+[4,4]     .   DeeeeeeeE----------------------------------R  .    .    .    .    .    .   .   retq
+[5,0]     .   D=========================================eeeeER   .    .    .    .    .   .   mulps	%xmm1, %xmm0
+[5,1]     .   D=============================================eER  .    .    .    .    .   .   movaps	%xmm0, %xmm1
+[5,2]     .   D==============================================eER .    .    .    .    .   .   shufps	$85, %xmm0, %xmm1
+[5,3]     .   D===============================================eeeER   .    .    .    .   .   addss	%xmm1, %xmm0
+[5,4]     .    DeeeeeeeE------------------------------------------R   .    .    .    .   .   retq
+[6,0]     .    D=================================================eeeeER    .    .    .   .   mulps	%xmm1, %xmm0
+[6,1]     .    D=====================================================eER   .    .    .   .   movaps	%xmm0, %xmm1
+[6,2]     .    D======================================================eER  .    .    .   .   shufps	$85, %xmm0, %xmm1
+[6,3]     .    D=======================================================eeeER    .    .   .   addss	%xmm1, %xmm0
+[6,4]     .    .DeeeeeeeE--------------------------------------------------R    .    .   .   retq
+[7,0]     .    .D=========================================================eeeeER.    .   .   mulps	%xmm1, %xmm0
+[7,1]     .    .D=============================================================eER    .   .   movaps	%xmm0, %xmm1
+[7,2]     .    .D==============================================================eER   .   .   shufps	$85, %xmm0, %xmm1
+[7,3]     .    .D===============================================================eeeER.   .   addss	%xmm1, %xmm0
+[7,4]     .    . DeeeeeeeE----------------------------------------------------------R.   .   retq
+[8,0]     .    . D=================================================================eeeeER.   mulps	%xmm1, %xmm0
+[8,1]     .    . D=====================================================================eER   movaps	%xmm0, %xmm1
+Truncated display due to cycle limit
+
+
+Average Wait times (based on the timeline view):
+[0]: Executions
+[1]: Average time spent waiting in a scheduler's queue
+[2]: Average time spent waiting in a scheduler's queue while ready
+[3]: Average time elapsed from WB until retire stage
+
+      [0]    [1]    [2]    [3]
+0.     10    37.9   0.1    0.0       mulps	%xmm1, %xmm0
+1.     10    41.8   0.0    0.0       movaps	%xmm0, %xmm1
+2.     10    42.8   0.0    0.0       shufps	$85, %xmm0, %xmm1
+3.     10    43.7   0.0    0.0       addss	%xmm1, %xmm0
+4.     10    1.0    1.0    38.0      retq
+       10    33.4   0.2    7.6       <total>
